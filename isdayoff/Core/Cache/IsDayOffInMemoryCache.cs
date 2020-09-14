@@ -1,41 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using isdayoff.Contract;
+using isdayoff.Contract.Abstractions;
 
 namespace isdayoff.Core.Cache
 {
-    internal class IsDayOffCache
+    internal class IsDayOffInMemoryCache : IIsDayOffCache
     {
-        public IsDayOffCache()
+        public IsDayOffInMemoryCache()
         {
             YearsCache = new Dictionary<string, List<DayOffDateTime>>();
             MonthsCache = new Dictionary<string, List<DayOffDateTime>>();
             DaysCache = new Dictionary<string, DayType>();
         }
-        
-        public Dictionary<string, List<DayOffDateTime>> YearsCache { get; }
-        public Dictionary<string, List<DayOffDateTime>> MonthsCache { get; }
-        public Dictionary<string, DayType> DaysCache { get; }
 
-        public void SaveYearInCache(int year, DayOffCountry country, List<DayOffDateTime> dayOffDateTime)
+        private Dictionary<string, List<DayOffDateTime>> YearsCache { get; }
+        private Dictionary<string, List<DayOffDateTime>> MonthsCache { get; }
+        private Dictionary<string, DayType> DaysCache { get; }
+
+        public void SaveYearInCache(int year, Country country, List<DayOffDateTime> dayOffDateTime)
         {
             var key = BuildKey(country, year);
             YearsCache[key] = dayOffDateTime;
         }
 
-        public void SaveMonthInCache(int year, int month, DayOffCountry country, List<DayOffDateTime> dayOffDateTime)
+        public void SaveMonthInCache(int year, int month, Country country, List<DayOffDateTime> dayOffDateTime)
         {
             var key = BuildKey(country, year, month);
             MonthsCache[key] = dayOffDateTime;
         }
 
-        public void SaveDayInCache(int year, int month, int day, DayOffCountry country, DayType dayType)
+        public void SaveDayInCache(int year, int month, int day, Country country, DayType dayType)
         {
             var key = BuildKey(country, year, month, day);
             DaysCache[key] = dayType;
         }
 
-        public bool TryGetCachedYear(int year, DayOffCountry country, out List<DayOffDateTime> result)
+        public bool TryGetCachedYear(int year, Country country, out List<DayOffDateTime> result)
         {
             var key = BuildKey(country, year);
             
@@ -45,12 +45,12 @@ namespace isdayoff.Core.Cache
                 return true;
             }
 
-            result = null;
+            result = default;
 
             return false;
         }
 
-        public bool TryGetCachedMonth(int year, int month, DayOffCountry country, out List<DayOffDateTime> result)
+        public bool TryGetCachedMonth(int year, int month, Country country, out List<DayOffDateTime> result)
         {
             var key = BuildKey(country, year, month);
             
@@ -60,12 +60,12 @@ namespace isdayoff.Core.Cache
                 return true;
             }
 
-            result = null;
+            result = default;
 
             return false;
         }
 
-        public bool TryGetCachedDay(int year, int month, int day, DayOffCountry country, out DayType result)
+        public bool TryGetCachedDay(int year, int month, int day, Country country, out DayType result)
         {
             var key = BuildKey(country, year, month, day);
             
@@ -80,7 +80,7 @@ namespace isdayoff.Core.Cache
             return false;
         }
 
-        private static string BuildKey(DayOffCountry country, int year, int? month = null, int? day = null)
+        private static string BuildKey(Country country, int year, int? month = null, int? day = null)
         {
             var key = year;
             

@@ -17,22 +17,22 @@ namespace isdayoff.Core
             this.baseUrl = baseUrl;
         }
         
-        public async Task<GetDataApiResponse> GetDataAsync(int year, DayOffCountry country)
+        public async Task<GetDataApiResponse> GetDataAsync(int year, Country country)
         {
             return await GetDataInternalAsync(year, null, null, country);
         }
         
-        public async Task<GetDataApiResponse> GetDataAsync(int year, int month, DayOffCountry country)
+        public async Task<GetDataApiResponse> GetDataAsync(int year, int month, Country country)
         {
             return await GetDataInternalAsync(year, month, null, country);
         }
         
-        public async Task<GetDataApiResponse> GetDataAsync(int year, int month, int day, DayOffCountry country)
+        public async Task<GetDataApiResponse> GetDataAsync(int year, int month, int day, Country country)
         {
             return await GetDataInternalAsync(year, month, day, country);
         }
         
-        private async Task<GetDataApiResponse> GetDataInternalAsync(int year, int? month, int? day, DayOffCountry country)
+        private async Task<GetDataApiResponse> GetDataInternalAsync(int year, int? month, int? day, Country country)
         {
             using (var httpClient = new HttpClient())
             {
@@ -54,7 +54,7 @@ namespace isdayoff.Core
             }
         }
 
-        private string BuildGetDataRequestUrl(int year, int? month, int? day, DayOffCountry country)
+        private string BuildGetDataRequestUrl(int year, int? month, int? day, Country country)
         {
             var stringBuilder = new StringBuilder();
 
@@ -80,19 +80,19 @@ namespace isdayoff.Core
             return stringBuilder.ToString();
         }
 
-        private string GetCountryCode(DayOffCountry country)
+        private string GetCountryCode(Country country)
         {
             switch (country)
             {
-                case DayOffCountry.Russia:
+                case Country.Russia:
                     return "ru";
-                case DayOffCountry.Belarus:
+                case Country.Belarus:
                     return "by";
-                case DayOffCountry.Ukraine:
+                case Country.Ukraine:
                     return "ua";
-                case DayOffCountry.Kazakhstan:
+                case Country.Kazakhstan:
                     return "kz";
-                case DayOffCountry.USA:
+                case Country.USA:
                     return "us";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(country), country, "Unknown country");

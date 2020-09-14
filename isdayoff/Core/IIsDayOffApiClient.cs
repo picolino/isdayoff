@@ -6,8 +6,8 @@ namespace isdayoff.Core
 {
     internal interface IIsDayOffApiClient
     {
-        Task<GetDataApiResponse> GetDataAsync(int year, DayOffCountry country);
-        Task<GetDataApiResponse> GetDataAsync(int year, int month, DayOffCountry country);
-        Task<GetDataApiResponse> GetDataAsync(int year, int month, int day, DayOffCountry country);
+        Task<GetDataApiResponse> GetDataAsync(int year, Country country);
+        Task<GetDataApiResponse> GetDataAsync(int year, int month, Country country);
+        Task<GetDataApiResponse> GetDataAsync(int year, int month, int day, Country country);
     }
 }

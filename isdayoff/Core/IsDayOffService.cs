@@ -3,85 +3,65 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using isdayoff.Contract;
-using isdayoff.Core.Cache;
+using isdayoff.Contract.Abstractions;
 
 namespace isdayoff.Core
 {
     internal class IsDayOffService
     {
-        private readonly IsDayOffSettings settings;
         private readonly IIsDayOffApiClient apiClient;
-        private readonly IsDayOffCache cache;
+        private readonly IIsDayOffCache cache;
         
-        public IsDayOffService(IsDayOffSettings settings, IIsDayOffApiClient apiClient)
+        public IsDayOffService(IIsDayOffApiClient apiClient, IIsDayOffCache cache)
         {
-            this.settings = settings;
             this.apiClient = apiClient;
-            cache = new IsDayOffCache();
+            this.cache = cache;
         }
 
-        public async Task<List<DayOffDateTime>> CheckYearAsync(int year, DayOffCountry country)
+        public async Task<List<DayOffDateTime>> CheckYearAsync(int year, Country country)
         {
-            if (settings.UseCache)
+            if (cache.TryGetCachedYear(year, country, out var cachedResult))
             {
-                if (cache.TryGetCachedYear(year, country, out var cachedResult))
-                {
-                    return cachedResult;
-                }
+                return cachedResult;
             }
             
             var response = await apiClient.GetDataAsync(year, country);
             var daysInYear = CreateDateRangeForYear(year);
             var result = GenerateDayOffDateTimeList(response.Result, daysInYear);
 
-            if (settings.UseCache)
-            {
-                cache.SaveYearInCache(year, country, result);
-            }
+            cache.SaveYearInCache(year, country, result);
 
             return result;
         }
 
-        public async Task<List<DayOffDateTime>> CheckMonthAsync(int year, int month, DayOffCountry country)
+        public async Task<List<DayOffDateTime>> CheckMonthAsync(int year, int month, Country country)
         {
-            if (settings.UseCache)
+            if (cache.TryGetCachedMonth(year, month, country, out var cachedResult))
             {
-                if (cache.TryGetCachedMonth(year, month, country, out var cachedResult))
-                {
-                    return cachedResult;
-                }
+                return cachedResult;
             }
             
             var response = await apiClient.GetDataAsync(year, month, country);
             var daysInMonth = CreateDateRangeForMonth(year, month);
             var result = GenerateDayOffDateTimeList(response.Result, daysInMonth);
 
-            if (settings.UseCache)
-            {
-                cache.SaveMonthInCache(year, month, country, result);
-            }
+            cache.SaveMonthInCache(year, month, country, result);
 
             return result;
         }
         
-        public async Task<DayType> CheckDayAsync(int year, int month, int day, DayOffCountry country)
+        public async Task<DayType> CheckDayAsync(int year, int month, int day, Country country)
         {
-            if (settings.UseCache)
+            if (cache.TryGetCachedDay(year, month, day, country, out var cachedResult))
             {
-                if (cache.TryGetCachedDay(year, month, day, country, out var cachedResult))
-                {
-                    return cachedResult;
-                }
+                return cachedResult;
             }
             
             var response = await apiClient.GetDataAsync(year, month, day, country);
             var charDayRepresentation = response.Result.Single();
             var result = ConvertCharToDateType(charDayRepresentation);
 
-            if (settings.UseCache)
-            {
-                cache.SaveDayInCache(year, month, day, country, result);
-            }
+            cache.SaveDayInCache(year, month, day, country, result);
             
             return result;
         }

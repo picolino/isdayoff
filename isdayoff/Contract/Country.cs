@@ -1,6 +1,6 @@
 ﻿namespace isdayoff.Contract
 {
-    public enum DayOffCountry
+    public enum Country
     {
         Russia,
         Belarus,

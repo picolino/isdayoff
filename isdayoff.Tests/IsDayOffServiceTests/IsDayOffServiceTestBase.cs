@@ -1,4 +1,5 @@
 ﻿using isdayoff.Core;
+using isdayoff.Core.Cache;
 using isdayoff.Tests.Fakes;
 
 namespace isdayoff.Tests.IsDayOffServiceTests
@@ -11,7 +12,7 @@ namespace isdayoff.Tests.IsDayOffServiceTests
         {
             base.Setup();
             
-            IsDayOffService = new IsDayOffService(IsDayOffSettings.Default, new IsDayOffApiClientStub());
+            IsDayOffService = new IsDayOffService(new IsDayOffApiClientStub(), new IsDayOffNoCache());
         }
     }
 }
