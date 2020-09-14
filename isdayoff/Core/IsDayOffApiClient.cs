@@ -41,20 +41,15 @@ namespace isdayoff.Core
                 try
                 {
                     var response = await httpClient.GetAsync(requestUrl);
-            
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var responseAsString = await response.Content.ReadAsStringAsync();
-                        return new GetDataApiResponse(responseAsString);
-                    }
-                    else
-                    {
-                        throw new BadStatusCodeFromExternalServiceException();
-                    }
+                    
+                    response.EnsureSuccessStatusCode();
+                    
+                    var responseAsString = await response.Content.ReadAsStringAsync();
+                    return new GetDataApiResponse(responseAsString);
                 }
                 catch (Exception e)
                 {
-                    throw new IsDayOffExternalServiceException("Something wrong happened while processing request to isdayoff external service", e);
+                    throw new IsDayOffExternalServiceException("Something wrong happened while processing request to isdayoff external service. See details in inner exception.", e);
                 }
             }
         }
