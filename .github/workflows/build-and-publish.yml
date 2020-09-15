@@ -11,6 +11,7 @@ env:
   NETCORE_VERSION: '3.1.200'                                # set this to the .NET Core version to use
   GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}   # set this to access token to github.com
   GITHUB_TOKEN: ${{ github.token }}                         # set this to access token to github.com
+  NUGET_USERNAME: picolino                                  # set this to username to nuget.org
   NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}               # set this to access token to nuget.org
 
 jobs:
@@ -37,7 +38,7 @@ jobs:
     - name: Add NuGet sources
       run: |
         dotnet nuget add source https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY_OWNER }}/index.json --name github --username ${{ env.GITHUB_REPOSITORY_OWNER }} --password ${{ env.GITHUB_TOKEN }} --store-password-in-clear-text
-        dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget --api-key ${{ secrets.NUGET_API_KEY }}
+        dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget --username ${{ env.NUGET_USERNAME }} --password ${{ secrets.NUGET_API_KEY }} --store-password-in-clear-text
     
     - name: NuGet push on GitHub
       run: dotnet nuget push **/*.nupkg --source github --skip-duplicate
