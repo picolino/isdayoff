@@ -15,6 +15,7 @@
         <RepositoryUrl>https://github.com/picolino/isdayoff</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageIcon>isdayoff.png</PackageIcon>
+        <PackageIconUrl>https://raw.githubusercontent.com/picolino/isdayoff/master/isdayoff/isdayoff.png</PackageIconUrl>
         <PackageReleaseNotes>- Add basic methods
 - Add settings
 - Add in-memory cache</PackageReleaseNotes>
