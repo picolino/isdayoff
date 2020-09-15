@@ -14,14 +14,14 @@
         <license>MIT</license>
         <RepositoryUrl>https://github.com/picolino/isdayoff</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageIcon>../isdayoff.png</PackageIcon>
+        <PackageIcon>isdayoff.png</PackageIcon>
         <PackageReleaseNotes>- Add basic methods
 - Add settings
 - Add in-memory cache</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="../isdayoff.png" Pack="true" Visible="false" PackagePath="" />
+        <None Include="isdayoff.png" Pack="true" Visible="false" PackagePath="" />
     </ItemGroup>
 
     <ItemGroup>
