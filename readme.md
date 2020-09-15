@@ -1,6 +1,10 @@
 ﻿<img src="isdayoff.ico" alt="logo" align="right"/>
 
 # IsDayOff
+
+[![Check-in](https://github.com/picolino/isdayoff/workflows/Check-in/badge.svg)](https://github.com/picolino/isdayoff)
+[![Nuget](https://img.shields.io/nuget/v/isdayoff)](https://www.nuget.org/packages/isdayoff/)
+
 IsDayOff is a .NET library for API isdayoff service (https://isdayoff.ru/)
 
 ## Quick start
