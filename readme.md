@@ -1,7 +1,7 @@
 ﻿<img src="isdayoff.ico" alt="logo" align="right"/>
 
 # IsDayOff
-IsDayOff API for .NET is library for performing
+IsDayOff is a .NET library for API isdayoff service (https://isdayoff.ru/)
 
 ## Quick start
 
