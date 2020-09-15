@@ -11,14 +11,18 @@
         <PackageTags>IsDayOff, Date, Time, DateTime, Daily, IsWorkday, Holidays</PackageTags>
         <FileVersion>1.0</FileVersion>
         <PackageProjectUrl>https://isdayoff.ru/</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/picolino/isdayoff/blob/master/license</PackageLicenseUrl>
+        <license>MIT</license>
         <RepositoryUrl>https://github.com/picolino/isdayoff</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageIconUrl>https://isdayoff.ru/favicon.ico</PackageIconUrl>
+        <PackageIcon>../isdayoff.png</PackageIcon>
         <PackageReleaseNotes>- Add basic methods
 - Add settings
 - Add in-memory cache</PackageReleaseNotes>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../isdayoff.png" Pack="true" Visible="false" PackagePath="" />
+    </ItemGroup>
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
