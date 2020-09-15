@@ -5,7 +5,7 @@ using isdayoff.Core.Responses;
 
 namespace isdayoff.Tests.Fakes
 {
-    public class IsDayOffApiClientStub : IIsDayOffApiClient
+    internal class IsDayOffApiClientStub : IIsDayOffApiClient
     {
         public string Response { get; set; }
         

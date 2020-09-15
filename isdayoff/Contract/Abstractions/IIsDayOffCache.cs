@@ -2,6 +2,9 @@
 
 namespace isdayoff.Contract.Abstractions
 {
+    /// <summary>
+    /// You can use this interface to create your own cache implementation.
+    /// </summary>
     public interface IIsDayOffCache
     {
         void SaveYearInCache(int year, Country country, List<DayOffDateTime> dayOffDateTime);

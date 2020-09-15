@@ -1,6 +1,6 @@
 ﻿namespace isdayoff.Core.Responses
 {
-    public class GetDataApiResponse
+    internal class GetDataApiResponse
     {
         public GetDataApiResponse(string result)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,10 +42,10 @@ namespace isdayoff.Core
                 try
                 {
                     var response = await httpClient.GetAsync(requestUrl);
-                    
-                    response.EnsureSuccessStatusCode();
-                    
                     var responseAsString = await response.Content.ReadAsStringAsync();
+
+                    ValidateResponse(year, month, day, country, response, responseAsString);
+
                     return new GetDataApiResponse(responseAsString);
                 }
                 catch (Exception e)
@@ -78,6 +79,22 @@ namespace isdayoff.Core
             stringBuilder.Append(GetCountryCode(country));
 
             return stringBuilder.ToString();
+        }
+
+        private void ValidateResponse(int year, int? month, int? day, Country country, HttpResponseMessage response, string responseContent)
+        {
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.BadRequest when responseContent == IsDayOffServiceConstants.BadDateResponseCode:
+                    throw new BadDateException(year, month, day, country);
+                case HttpStatusCode.BadRequest when responseContent == IsDayOffServiceConstants.ServiceErrorResponseCode:
+                    throw new ServiceErrorException();
+                case HttpStatusCode.NotFound when responseContent == IsDayOffServiceConstants.DayOffDataNotFoundResponseCode:
+                    throw new DayOffDataNotFoundException(year, month, day, country);
+                default:
+                    response.EnsureSuccessStatusCode();
+                    break;
+            }
         }
 
         private string GetCountryCode(Country country)

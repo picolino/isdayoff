@@ -21,7 +21,7 @@ namespace isdayoff
         /// Makes IsDayOff with default settings.
         /// Default country sets to Russia and no in-memory cache use.
         /// </summary>
-        public IsDayOff() : this(new IsDayOffSettingsBuilder().Create())
+        public IsDayOff() : this(IsDayOffSettings.Default)
         {
         }
 
