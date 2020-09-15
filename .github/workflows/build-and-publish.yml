@@ -34,16 +34,19 @@ jobs:
     
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+      
+    - name: Pack
+      run: dotnet pack ${{ env.APP_NAME }}/${{ env.APP_NAME }}.csproj --output nuget-packages --configuration Release
     
     - name: Add NuGet sources
       run: |
         dotnet nuget add source https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY_OWNER }}/index.json --name github --username ${{ env.GITHUB_REPOSITORY_OWNER }} --password ${{ env.GITHUB_TOKEN }} --store-password-in-clear-text
     
     - name: NuGet push on GitHub
-      run: dotnet nuget push **/*.nupkg --source github --skip-duplicate
+      run: dotnet nuget push nuget-packages/*.nupkg --source github --skip-duplicate
       
     - name: NuGet push on NuGet
-      run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+      run: dotnet nuget push nuget-packages/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
     
     - name: Upload NuGet package
       uses: actions/upload-artifact@v2.1.4
