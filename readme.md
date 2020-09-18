@@ -4,7 +4,7 @@
 
 [![Check-in](https://github.com/picolino/isdayoff/workflows/Check-in/badge.svg)](https://github.com/picolino/isdayoff)
 [![Nuget](https://img.shields.io/nuget/v/isdayoff)](https://www.nuget.org/packages/isdayoff/)
-[![GitHub](https://img.shields.io/github/license/picolino/isdayoff?color=brightgreen)](https://github.com/picolino/isdayoff/blob/master/license)
+[![GitHub](https://img.shields.io/github/license/picolino/isdayoff?color=blue)](https://github.com/picolino/isdayoff/blob/master/license)
 
 IsDayOff is a .NET library for API isdayoff service (https://isdayoff.ru/)
 
