@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
 
@@ -8,14 +9,14 @@ namespace isdayoff.Core.Cache
     {
         public IsDayOffInMemoryCache()
         {
-            YearsCache = new Dictionary<string, List<DayOffDateTime>>();
-            MonthsCache = new Dictionary<string, List<DayOffDateTime>>();
-            DaysCache = new Dictionary<string, DayType>();
+            YearsCache = new ConcurrentDictionary<string, List<DayOffDateTime>>();
+            MonthsCache = new ConcurrentDictionary<string, List<DayOffDateTime>>();
+            DaysCache = new ConcurrentDictionary<string, DayType>();
         }
 
-        private Dictionary<string, List<DayOffDateTime>> YearsCache { get; }
-        private Dictionary<string, List<DayOffDateTime>> MonthsCache { get; }
-        private Dictionary<string, DayType> DaysCache { get; }
+        private ConcurrentDictionary<string, List<DayOffDateTime>> YearsCache { get; }
+        private ConcurrentDictionary<string, List<DayOffDateTime>> MonthsCache { get; }
+        private ConcurrentDictionary<string, DayType> DaysCache { get; }
 
         public void SaveYearInCache(int year, Country country, List<DayOffDateTime> dayOffDateTime)
         {
