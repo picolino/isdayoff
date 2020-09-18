@@ -1,6 +1,11 @@
 ﻿<img src="isdayoff.ico" alt="logo" align="right"/>
 
 # IsDayOff
+
+[![Check-in](https://github.com/picolino/isdayoff/workflows/Check-in/badge.svg)](https://github.com/picolino/isdayoff)
+[![Nuget](https://img.shields.io/nuget/v/isdayoff)](https://www.nuget.org/packages/isdayoff/)
+[![GitHub](https://img.shields.io/github/license/picolino/isdayoff?color=brightgreen)](https://github.com/picolino/isdayoff/blob/master/license)
+
 IsDayOff is a .NET library for API isdayoff service (https://isdayoff.ru/)
 
 ## Quick start
@@ -61,6 +66,3 @@ It is useful if you want to cache external service responses in file or in datab
 ## FAQ
 **Q: Is this library fully thread safe?**  
 A: Yes. You can use one instance between multiple threads with no doubt.
-
-## License
-MIT

@@ -35,7 +35,7 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
       
     - name: Pack
-      run: dotnet pack ${{ env.APP_NAME }}/${{ env.APP_NAME }}.csproj --output nuget-packages --configuration Release --include-symbols
+      run: dotnet pack ${{ env.APP_NAME }}/${{ env.APP_NAME }}.csproj --output nuget-packages --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg
     
     - name: Add NuGet sources
       run: |
