@@ -2,6 +2,7 @@
 using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
 using isdayoff.Core.Cache;
+using JetBrains.Annotations;
 
 namespace isdayoff
 {
@@ -9,6 +10,7 @@ namespace isdayoff
     /// Class for construct IsDayOff settings.
     /// Should be created only from <see cref="IsDayOffSettings.Build"/> property of <see cref="IsDayOffSettings"/> class.
     /// </summary>
+    [PublicAPI]
     public class IsDayOffSettingsBuilder
     {
         private Country defaultCountry = Country.Russia;
@@ -28,6 +30,7 @@ namespace isdayoff
         /// or day (<code>CheckDayAsync</code>) of this year, additional request will be performed.
         /// However, it is likely this behavior will change in future.
         /// </remarks>
+        [NotNull]
         public IsDayOffSettingsBuilder UseInMemoryCache()
         {
             cache = new IsDayOffInMemoryCache();
@@ -38,9 +41,10 @@ namespace isdayoff
         /// Set up custom cache implementation
         /// </summary>
         /// <param name="customCache">Custom cache implementation</param>
+        [NotNull]
         public IsDayOffSettingsBuilder UseCustomCache(IIsDayOffCache customCache)
         {
-            cache = customCache;
+            cache = customCache ?? throw new ArgumentNullException(nameof(customCache));
             return this;
         }
 
@@ -48,6 +52,7 @@ namespace isdayoff
         /// Set up default country for methods without country in parameters
         /// </summary>
         /// <param name="country">Country to set as default country</param>
+        [NotNull]
         public IsDayOffSettingsBuilder UseDefaultCountry(Country country)
         {
             defaultCountry = country;
@@ -59,11 +64,13 @@ namespace isdayoff
         /// </summary>
         /// <returns>Settings</returns>
         /// <exception cref="ArgumentNullException">Thrown when some not null property is set to null</exception>
+        [NotNull]
         public IsDayOffSettings Create()
         {
             return new IsDayOffSettings(cache, defaultCountry);
         }
 
+        [NotNull]
         public static implicit operator IsDayOffSettings(IsDayOffSettingsBuilder builder)
         {
             return builder.Create();

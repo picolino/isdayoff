@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using isdayoff.Contract;
 using isdayoff.Core;
 using isdayoff.Core.Exceptions;
+using JetBrains.Annotations;
 
 namespace isdayoff
 {
     /// <summary>
     /// Basic class for operating with isdayoff API
     /// </summary>
+    [PublicAPI]
     public class IsDayOff
     {
         private readonly IsDayOffSettings settings;
@@ -31,7 +33,7 @@ namespace isdayoff
         /// <param name="settings">Settings</param>
         public IsDayOff(IsDayOffSettings settings)
         {
-            this.settings = settings;
+            this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
             service = new IsDayOffService(new IsDayOffApiClient(ApiBaseUrl), settings.Cache);
         }
 
@@ -51,7 +53,6 @@ namespace isdayoff
         /// Get dates with day off information for year of default country
         /// </summary>
         /// <param name="year">Year to get dates with day off information</param>
-        /// <param name="country">Country to get dates with day off information for</param>
         /// <returns>List of dates with day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
         public async Task<List<DayOffDateTime>> CheckYearAsync(int year)

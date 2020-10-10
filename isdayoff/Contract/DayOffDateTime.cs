@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using JetBrains.Annotations;
 
 namespace isdayoff.Contract
 {
     /// <summary>
     /// Provides day off information about day and day itself 
     /// </summary>
+    [PublicAPI]
     public readonly struct DayOffDateTime
     {
         /// <summary>
