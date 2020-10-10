@@ -31,6 +31,7 @@ namespace isdayoff
         /// Makes IsDayOff with overriden settings.
         /// </summary>
         /// <param name="settings">Settings</param>
+        /// <exception cref="ArgumentNullException">Thrown when some not null property is set to null</exception>
         public IsDayOff(IsDayOffSettings settings)
         {
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));

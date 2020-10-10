@@ -50,7 +50,7 @@ namespace isdayoff.Core
                 }
                 catch (Exception e)
                 {
-                    throw new IsDayOffExternalServiceException("Something wrong happened while processing request to isdayoff external service. See details in inner exception.", e);
+                    throw new IsDayOffExternalServiceException(e);
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace isdayoff.Core
                 case Country.USA:
                     return "us";
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(country), country, "Unknown country");
+                    throw new ArgumentOutOfRangeException(nameof(country), country, ErrorsMessages.UnknownCountry());
             }
         }
     }

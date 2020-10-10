@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
+using isdayoff.Core.Exceptions;
 
 namespace isdayoff.Core
 {
@@ -118,7 +119,7 @@ namespace isdayoff.Core
                 case '4':
                     return DayType.WorkingDayAdvanced;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(character), character, "Unknown result");
+                    throw new ArgumentOutOfRangeException(nameof(character), character, ErrorsMessages.UnknownResult());
             }
         }
     }

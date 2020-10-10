@@ -1,6 +1,7 @@
 ﻿using System;
 using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
+using isdayoff.Core.Exceptions;
 using JetBrains.Annotations;
 
 namespace isdayoff
@@ -22,8 +23,7 @@ namespace isdayoff
         
         internal IsDayOffSettings(IIsDayOffCache cache, Country defaultCountry)
         {
-            Cache = cache ?? throw new ArgumentNullException(nameof(cache), 
-                "Cache implementation can't be null. Cache is disabled by-default so you dont need to set it to null.");
+            Cache = cache ?? throw new ArgumentNullException(nameof(cache), ErrorsMessages.CacheCanNotBeNull());
             DefaultCountry = defaultCountry;
         }
         
