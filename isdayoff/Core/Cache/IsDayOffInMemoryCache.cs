@@ -87,12 +87,12 @@ namespace isdayoff.Core.Cache
             
             if (month.HasValue)
             {
-                key = key * 100 + month.Value;
+                key = (key * 100) + month.Value;
             }
 
             if (day.HasValue)
             {
-                key = key * 100 + day.Value;
+                key = (key * 100) + day.Value;
             }
 
             return $"{country:G}-{key}";
