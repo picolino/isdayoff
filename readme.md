@@ -3,10 +3,14 @@
 # IsDayOff
 
 [![Check-in](https://github.com/picolino/isdayoff/workflows/Check-in/badge.svg)](https://github.com/picolino/isdayoff)
+[![CodeFactor](https://www.codefactor.io/repository/github/picolino/isdayoff/badge)](https://www.codefactor.io/repository/github/picolino/isdayoff)
 [![Nuget](https://img.shields.io/nuget/v/isdayoff)](https://www.nuget.org/packages/isdayoff/)
 [![GitHub](https://img.shields.io/github/license/picolino/isdayoff?color=blue)](https://github.com/picolino/isdayoff/blob/master/license)
 
 IsDayOff is a .NET library for API isdayoff service (https://isdayoff.ru/)
+
+## Target Frameworks
+[![DotNetStandard20](https://img.shields.io/badge/.NET%20Standard-2.0-informational.svg)](https://docs.microsoft.com/ru-ru/dotnet/standard/net-standard)
 
 ## Quick start
 
@@ -66,3 +70,19 @@ It is useful if you want to cache external service responses in file or in datab
 ## FAQ
 **Q: Is this library fully thread safe?**  
 A: Yes. You can use one instance between multiple threads with no doubt.
+
+**Q: Why some resources (urls) are not available through that library?**  
+A: Because that functions built into .NET library or they can be created using already existing methods of library.
+
+Here a full list of isdayoff resources that is not implemented in library and analogues that can be used to achieve similar behaviour:
+
+| isdayoff resource       | .NET analogue                                             |
+|-------------------------|-----------------------------------------------------------|
+| `/now`                  | `DateTime.Now`                                            |
+| `/today`                | `new IsDayOff().CheckDayAsync(DateTime.Today)`            |
+| `/tomorrow`             | `new IsDayOff().CheckDayAsync(DateTime.Today.AddDays(1))` |
+| `/api/isleap?year=YYYY` | `DateTime.IsLeapYear(YYYY)`                               |
+
+## License
+
+[MIT](https://github.com/picolino/isdayoff/blob/master/license)
