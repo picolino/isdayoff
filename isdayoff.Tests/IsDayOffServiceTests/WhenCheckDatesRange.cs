@@ -47,13 +47,15 @@ namespace isdayoff.Tests.IsDayOffServiceTests
         }
 
         [Test]
-        public void IfResponseTypeIsUnknownThenArgumentExceptionThrows([Values("5", "6", "7", "8", "9", "56789")] string apiResponse)
+        public void IfResponseTypeIsUnknownThenArgumentExceptionThrows([Values("5", "6", "7", "8", "9", "56789", "0010as", "05", "a01")] string apiResponse)
         {
+            var initialDate = 04.08.Of(2020);
+            var endDate = initialDate.AddDays(apiResponse.Length);
             ApiClientStub.Response = apiResponse;
 
             async Task Act()
             {
-                await IsDayOffService.CheckDatesRangeAsync(04.08.Of(2020), 04.08.Of(2020), Country.Russia, CancellationToken.None);
+                await IsDayOffService.CheckDatesRangeAsync(initialDate, endDate, Country.Russia, CancellationToken.None);
             } 
             
             Assert.ThrowsAsync<ArgumentOutOfRangeException>(Act);
