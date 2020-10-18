@@ -32,6 +32,5 @@ namespace isdayoff.Core.Extensions
                 yield return date;
             }
         }
-        
     }
 }
