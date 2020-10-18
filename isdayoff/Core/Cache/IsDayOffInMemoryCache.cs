@@ -32,7 +32,7 @@ namespace isdayoff.Core.Cache
             }
         }
 
-        public Task<bool> TryGetCachedWithinDates(DateTime from, DateTime to, Country country, out List<DayOffDateTime> result)
+        public Task<bool> TryGetCachedDatesRange(DateTime from, DateTime to, Country country, out List<DayOffDateTime> result)
         {
             result = new List<DayOffDateTime>();
             

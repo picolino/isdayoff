@@ -30,7 +30,7 @@ namespace isdayoff.Core
                 from = temp;
             }
             
-            if (await cache.TryGetCachedWithinDates(from, to, country, out var cachedResult))
+            if (await cache.TryGetCachedDatesRange(from, to, country, out var cachedResult))
             {
                 return cachedResult;
             }
