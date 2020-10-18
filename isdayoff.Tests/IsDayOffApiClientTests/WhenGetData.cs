@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using isdayoff.Contract;
@@ -12,6 +13,20 @@ namespace isdayoff.Tests.IsDayOffApiClientTests
 {
     internal class WhenGetData : IsDayOffApiClientTestBase
     {
+        [Test]
+        [TestCase("010201000")]
+        [TestCase("999999999")]
+        [TestCase("response?!")]
+        [TestCase("0")]
+        public async Task ResponsePassesUnchanged(string response)
+        {
+            HttpClientStub.ResponseStringContent = response;
+            
+            var result = await IsDayOffApiClient.GetDataAsync(04.08.Of(2020), 04.08.Of(2020), Country.Russia, CancellationToken.None);
+
+            Assert.That(result.Result, Is.EqualTo(response));
+        }
+        
         [Test]
         [TestCaseSource(nameof(UrlConstructionTestData))]
         public async Task<string> UrlConstructsCorrectly(DateTime from, DateTime to, Country country, string fakeResponse)
@@ -76,6 +91,11 @@ namespace isdayoff.Tests.IsDayOffApiClientTests
                          {
                              TestName = "IfResponseCodeIsNotFoundAndResponseContentIs101ThenServiceErrorExceptionThrows",
                              ExpectedResult = typeof(DayOffDataNotFoundException)
+                         };
+            yield return new TestCaseData(string.Empty, HttpStatusCode.InternalServerError)
+                         {
+                             TestName = "IfResponseCodeIsInternalServerErrorThenHttpRequestExceptionThrows",
+                             ExpectedResult = typeof(HttpRequestException)
                          };
         }
     }
