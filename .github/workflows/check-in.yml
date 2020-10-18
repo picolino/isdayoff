@@ -1,5 +1,8 @@
 name: Check-in
 
+env:
+  GITHUB_TOKEN: ${{ github.token }}                         # set this to access token to github.com
+
 on:
   push:
     branches: [ master ]
@@ -17,9 +20,17 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.101
+
       - name: Restore
         run: dotnet restore
+
       - name: Build
         run: dotnet build --configuration Release --no-restore
+
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test --no-restore --verbosity normal /p:CollectCoverage=true /p:CoverletOutput=coverage/ /p:CoverletOutputFormat=lcov
+
+      - name: Publish test coverage report to coveralls.io
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ env.GITHUB_TOKEN }}
