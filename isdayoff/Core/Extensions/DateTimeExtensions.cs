@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace isdayoff.Core.Extensions
 {
-    public static class DateTimeExtensions
+    internal static class DateTimeExtensions
     {
         public static DateTime StartOfYear(this DateTime dateTime)
         {
