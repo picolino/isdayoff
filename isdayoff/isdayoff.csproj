@@ -2,22 +2,22 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <AssemblyVersion>1.1</AssemblyVersion>
-        <PackageVersion>1.1</PackageVersion>
+        <AssemblyVersion>1.2</AssemblyVersion>
+        <PackageVersion>1.2</PackageVersion>
         <Title>isdayoff</Title>
         <Authors>Danila Chervonny (contact@picolino.dev)</Authors>
         <Description>IsDayOff is a .NET library for API isdayoff service (https://isdayoff.ru/)</Description>
         <Copyright>Danila Chervonny, Copyright © 2020 MIT</Copyright>
         <PackageTags>IsDayOff, Date, Time, DateTime, Daily, IsWorkday, Holidays</PackageTags>
-        <FileVersion>1.1</FileVersion>
+        <FileVersion>1.2</FileVersion>
         <PackageProjectUrl>https://isdayoff.ru/</PackageProjectUrl>
         <license>MIT</license>
         <RepositoryUrl>https://github.com/picolino/isdayoff</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageIcon>isdayoff.png</PackageIcon>
         <PackageIconUrl>https://raw.githubusercontent.com/picolino/isdayoff/master/isdayoff/isdayoff.png</PackageIconUrl>
-        <PackageReleaseNotes>- Add localization
-- Fix concurrency</PackageReleaseNotes>
+        <PackageReleaseNotes>- Add dates range support
+- Cache API changed</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
