@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
 using isdayoff.Core.Exceptions;
+using isdayoff.Core.Extensions;
 
 namespace isdayoff.Core
 {
@@ -19,57 +21,31 @@ namespace isdayoff.Core
             this.cache = cache;
         }
 
-        public async Task<List<DayOffDateTime>> CheckYearAsync(int year, Country country)
+        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(DateTime from, DateTime to, Country country, CancellationToken cancellationToken)
         {
-            if (cache.TryGetCachedYear(year, country, out var cachedResult))
+            if (from > to)
+            {
+                var temp = to;
+                to = from;
+                from = temp;
+            }
+            
+            if (await cache.TryGetCachedWithinDates(from, to, country, out var cachedResult))
             {
                 return cachedResult;
             }
-            
-            var response = await apiClient.GetDataAsync(year, country);
-            var daysInYear = CreateDateRangeForYear(year);
-            var result = GenerateDayOffDateTimeList(response.Result, daysInYear);
+                
+            var response = await apiClient.GetDataAsync(from, to, country, cancellationToken);
+            var result = GenerateDayOffDateTimeList(response.Result, from.ByDaysTill(to).ToList());
 
-            cache.SaveYearInCache(year, country, result);
+            await cache.SaveDateRangeInCache(from, to, country, result);
 
-            return result;
-        }
-
-        public async Task<List<DayOffDateTime>> CheckMonthAsync(int year, int month, Country country)
-        {
-            if (cache.TryGetCachedMonth(year, month, country, out var cachedResult))
-            {
-                return cachedResult;
-            }
-            
-            var response = await apiClient.GetDataAsync(year, month, country);
-            var daysInMonth = CreateDateRangeForMonth(year, month);
-            var result = GenerateDayOffDateTimeList(response.Result, daysInMonth);
-
-            cache.SaveMonthInCache(year, month, country, result);
-
-            return result;
-        }
-        
-        public async Task<DayType> CheckDayAsync(int year, int month, int day, Country country)
-        {
-            if (cache.TryGetCachedDay(year, month, day, country, out var cachedResult))
-            {
-                return cachedResult;
-            }
-            
-            var response = await apiClient.GetDataAsync(year, month, day, country);
-            var charDayRepresentation = response.Result.Single();
-            var result = ConvertCharToDateType(charDayRepresentation);
-
-            cache.SaveDayInCache(year, month, day, country, result);
-            
             return result;
         }
 
         private static List<DayOffDateTime> GenerateDayOffDateTimeList(string responseResult, IReadOnlyList<DateTime> dates)
         {
-            var results = new DayOffDateTime[responseResult.Length];
+            var results = new DayOffDateTime[dates.Count];
             
             for (var i = 0; i < dates.Count; i++)
             {
@@ -80,30 +56,6 @@ namespace isdayoff.Core
             }
 
             return results.ToList();
-        }
-
-        private static List<DateTime> CreateDateRangeForYear(int year)
-        {
-            var dates = new List<DateTime>();
-
-            for (var date = new DateTime(year, 1, 1); date.Year == year; date = date.AddDays(1))
-            {
-                dates.Add(date);       
-            }
-
-            return dates;
-        }
-
-        private static List<DateTime> CreateDateRangeForMonth(int year, int month)
-        {
-            var dates = new List<DateTime>();
-
-            for (var date = new DateTime(year, month, 1); date.Month == month; date = date.AddDays(1))
-            {
-                dates.Add(date);       
-            }
-
-            return dates;
         }
 
         private static DayType ConvertCharToDateType(char character)

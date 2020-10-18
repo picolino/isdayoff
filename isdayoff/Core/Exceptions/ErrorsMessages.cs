@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using isdayoff.Contract;
 
 namespace isdayoff.Core.Exceptions
@@ -14,18 +15,18 @@ namespace isdayoff.Core.Exceptions
                        : "Cache implementation can't be null. Cache is disabled by-default so you dont need to set it to null";
         }
 
-        public static string CanNotFindDayOffInfo(int year, int? month, int? day, Country country)
+        public static string CanNotFindDayOffInfo(DateTime from, DateTime to, Country country)
         {
             return IsRussian
-                       ? $"Не найдена информация на '{year}{(month is null ? "" : $"-{month}")}{(day is null ? "" : $"-{day}")}' для страны '{country}'"
-                       : $"Cannot find day off information on date '{year}{(month is null ? "" : $"-{month}")}{(day is null ? "" : $"-{day}")}' for country '{country}'";
+                       ? $"Не найдена информация в диапазоне '{from.ToShortDateString()}-{to.ToShortDateString()}' для страны '{country}'"
+                       : $"Cannot find day off information in dates range '{from.ToShortDateString()}-{to.ToShortDateString()}' for country '{country}'";
         }
 
-        public static string DateNotSupports(int year, int? month, int? day, Country country)
+        public static string DatesRangeNotSupports(DateTime from, DateTime to, Country country)
         {
             return IsRussian
-                       ? $"Дата '{year}{(month is null ? "" : $"-{month}")}{(day is null ? "" : $"-{day}")}' для страны '{country}' не поддерживается"
-                       : $"Date '{year}{(month is null ? "" : $"-{month}")}{(day is null ? "" : $"-{day}")}' for country '{country}' not supports";
+                       ? $"Диапазон дат '{from.ToShortDateString()}-{to.ToShortDateString()}' для страны '{country}' не поддерживается"
+                       : $"Dates range '{from.ToShortDateString()}-{to.ToShortDateString()}' for country '{country}' not supports";
         }
 
         public static string SomethingWrongWithTheService()

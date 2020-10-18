@@ -2,49 +2,45 @@
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using isdayoff.Contract;
 using isdayoff.Core.Exceptions;
+using isdayoff.Core.Http;
 using isdayoff.Core.Responses;
 
 namespace isdayoff.Core
 {
     internal class IsDayOffApiClient : IIsDayOffApiClient
     {
+        private readonly IHttpClientFactory httpClientFactory;
         private readonly string baseUrl;
 
-        public IsDayOffApiClient(string baseUrl)
+        public IsDayOffApiClient(string baseUrl, IHttpClientFactory httpClientFactory)
         {
             this.baseUrl = baseUrl;
+            this.httpClientFactory = httpClientFactory;
+        }
+
+        public async Task<GetDataApiResponse> GetDataAsync(DateTime from, DateTime to, Country country, CancellationToken cancellationToken)
+        {
+            return await GetDataInternalAsync(from, to, country, cancellationToken);
         }
         
-        public async Task<GetDataApiResponse> GetDataAsync(int year, Country country)
+        private async Task<GetDataApiResponse> GetDataInternalAsync(DateTime from, DateTime to, Country country, CancellationToken cancellationToken)
         {
-            return await GetDataInternalAsync(year, null, null, country);
-        }
-        
-        public async Task<GetDataApiResponse> GetDataAsync(int year, int month, Country country)
-        {
-            return await GetDataInternalAsync(year, month, null, country);
-        }
-        
-        public async Task<GetDataApiResponse> GetDataAsync(int year, int month, int day, Country country)
-        {
-            return await GetDataInternalAsync(year, month, day, country);
-        }
-        
-        private async Task<GetDataApiResponse> GetDataInternalAsync(int year, int? month, int? day, Country country)
-        {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = httpClientFactory.CreateHttpClient())
             {
-                var requestUrl = BuildGetDataRequestUrl(year, month, day, country);
+                var countryCode = GetCountryCode(country);
+                
+                var requestUrl = BuildGetDataRequestUrl(from, to, countryCode);
 
                 try
                 {
-                    var response = await httpClient.GetAsync(requestUrl);
+                    var response = await httpClient.GetAsync(requestUrl, cancellationToken);
                     var responseAsString = await response.Content.ReadAsStringAsync();
 
-                    ValidateResponse(year, month, day, country, response, responseAsString);
+                    ValidateResponse(from, to, country, response, responseAsString);
 
                     return new GetDataApiResponse(responseAsString);
                 }
@@ -55,48 +51,38 @@ namespace isdayoff.Core
             }
         }
 
-        private string BuildGetDataRequestUrl(int year, int? month, int? day, Country country)
+        private string BuildGetDataRequestUrl(DateTime from, DateTime to, string countryCode)
         {
             var stringBuilder = new StringBuilder();
 
             stringBuilder.Append(baseUrl);
-            stringBuilder.Append("getdata?year=");
-            stringBuilder.AppendFormat("{0:0000}", year);
-
-            if (month.HasValue)
-            {
-                stringBuilder.Append("&month=");
-                stringBuilder.AppendFormat("{0:00}", month);
-            }
-
-            if (day.HasValue)
-            {
-                stringBuilder.Append("&day=");
-                stringBuilder.AppendFormat("{0:00}", day);
-            }
-
+            stringBuilder.Append("getdata");
+            stringBuilder.Append("?date1=");
+            stringBuilder.AppendFormat("{0:yyyyMMdd}", from);
+            stringBuilder.Append("&date2=");
+            stringBuilder.AppendFormat("{0:yyyyMMdd}", to);
             stringBuilder.Append("&cc=");
-            stringBuilder.Append(GetCountryCode(country));
+            stringBuilder.Append(countryCode);
 
             return stringBuilder.ToString();
         }
 
-        private void ValidateResponse(int year, int? month, int? day, Country country, HttpResponseMessage response, string responseContent)
+        private void ValidateResponse(DateTime from, DateTime to, Country country, HttpResponseMessage response, string responseContent)
         {
             switch (response.StatusCode)
             {
                 case HttpStatusCode.BadRequest when responseContent == IsDayOffServiceConstants.BadDateResponseCode:
-                    throw new BadDateException(year, month, day, country);
+                    throw new BadDatesRangeException(from, to, country);
                 case HttpStatusCode.BadRequest when responseContent == IsDayOffServiceConstants.ServiceErrorResponseCode:
                     throw new ServiceErrorException();
                 case HttpStatusCode.NotFound when responseContent == IsDayOffServiceConstants.DayOffDataNotFoundResponseCode:
-                    throw new DayOffDataNotFoundException(year, month, day, country);
+                    throw new DayOffDataNotFoundException(from, to, country);
                 default:
                     response.EnsureSuccessStatusCode();
                     break;
             }
         }
-
+        
         private string GetCountryCode(Country country)
         {
             switch (country)

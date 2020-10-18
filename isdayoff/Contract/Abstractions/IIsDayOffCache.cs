@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 
 namespace isdayoff.Contract.Abstractions
@@ -9,11 +11,7 @@ namespace isdayoff.Contract.Abstractions
     [PublicAPI]
     public interface IIsDayOffCache
     {
-        void SaveYearInCache(int year, Country country, List<DayOffDateTime> dayOffDateTime);
-        void SaveMonthInCache(int year, int month, Country country, List<DayOffDateTime> dayOffDateTime);
-        void SaveDayInCache(int year, int month, int day, Country country, DayType dayType);
-        bool TryGetCachedYear(int year, Country country, out List<DayOffDateTime> result);
-        bool TryGetCachedMonth(int year, int month, Country country, out List<DayOffDateTime> result);
-        bool TryGetCachedDay(int year, int month, int day, Country country, out DayType result);
+        Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, List<DayOffDateTime> dayOffDateTimeList);
+        Task<bool> TryGetCachedWithinDates(DateTime from, DateTime to, Country country, out List<DayOffDateTime> result);
     }
 }

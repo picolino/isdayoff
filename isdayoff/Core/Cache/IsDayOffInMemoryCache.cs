@@ -1,101 +1,63 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
+using isdayoff.Core.Extensions;
 
 namespace isdayoff.Core.Cache
 {
     internal class IsDayOffInMemoryCache : IIsDayOffCache
     {
+        private readonly object locker = new object();
+        
         public IsDayOffInMemoryCache()
         {
-            YearsCache = new ConcurrentDictionary<string, List<DayOffDateTime>>();
-            MonthsCache = new ConcurrentDictionary<string, List<DayOffDateTime>>();
-            DaysCache = new ConcurrentDictionary<string, DayType>();
+            Cache = new SortedList<(Country, DateTime), DayOffDateTime>();
         }
 
-        private ConcurrentDictionary<string, List<DayOffDateTime>> YearsCache { get; }
-        private ConcurrentDictionary<string, List<DayOffDateTime>> MonthsCache { get; }
-        private ConcurrentDictionary<string, DayType> DaysCache { get; }
+        private SortedList<(Country, DateTime), DayOffDateTime> Cache { get; }
 
-        public void SaveYearInCache(int year, Country country, List<DayOffDateTime> dayOffDateTime)
+        public Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, List<DayOffDateTime> dayOffDateTimeList)
         {
-            var key = BuildKey(country, year);
-            YearsCache[key] = dayOffDateTime;
+            lock (locker)
+            {
+                foreach (var dayOffDateTime in dayOffDateTimeList)
+                {
+                    Cache[(country, dayOffDateTime.DateTime)] = dayOffDateTime;
+                }
+
+                return Task.CompletedTask;
+            }
         }
 
-        public void SaveMonthInCache(int year, int month, Country country, List<DayOffDateTime> dayOffDateTime)
+        public Task<bool> TryGetCachedWithinDates(DateTime from, DateTime to, Country country, out List<DayOffDateTime> result)
         {
-            var key = BuildKey(country, year, month);
-            MonthsCache[key] = dayOffDateTime;
-        }
-
-        public void SaveDayInCache(int year, int month, int day, Country country, DayType dayType)
-        {
-            var key = BuildKey(country, year, month, day);
-            DaysCache[key] = dayType;
-        }
-
-        public bool TryGetCachedYear(int year, Country country, out List<DayOffDateTime> result)
-        {
-            var key = BuildKey(country, year);
+            result = new List<DayOffDateTime>();
             
-            if (YearsCache.ContainsKey(key))
+            var hasInCache = true;
+
+            var days = from.ByDaysTill(to).ToList();
+
+            lock (locker)
             {
-                result = YearsCache[key];
-                return true;
+                foreach (var dateTime in days)
+                {
+                    if (Cache.TryGetValue((country, dateTime), out var cachedDayOffDateTime))
+                    {
+                        result.Add(cachedDayOffDateTime);
+                    }
+                    else
+                    {
+                        hasInCache = false;
+                        result = default;
+                        break;
+                    }
+                }
             }
 
-            result = default;
-
-            return false;
-        }
-
-        public bool TryGetCachedMonth(int year, int month, Country country, out List<DayOffDateTime> result)
-        {
-            var key = BuildKey(country, year, month);
-            
-            if (MonthsCache.ContainsKey(key))
-            {
-                result = MonthsCache[key];
-                return true;
-            }
-
-            result = default;
-
-            return false;
-        }
-
-        public bool TryGetCachedDay(int year, int month, int day, Country country, out DayType result)
-        {
-            var key = BuildKey(country, year, month, day);
-            
-            if (DaysCache.ContainsKey(key))
-            {
-                result = DaysCache[key];
-                return true;
-            }
-
-            result = default;
-
-            return false;
-        }
-
-        private static string BuildKey(Country country, int year, int? month = null, int? day = null)
-        {
-            var key = year;
-            
-            if (month.HasValue)
-            {
-                key = (key * 100) + month.Value;
-            }
-
-            if (day.HasValue)
-            {
-                key = (key * 100) + day.Value;
-            }
-
-            return $"{country:G}-{key}";
+            return Task.FromResult(hasInCache);
         }
     }
 }

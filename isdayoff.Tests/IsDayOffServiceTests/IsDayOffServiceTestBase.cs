@@ -1,18 +1,15 @@
 ﻿using isdayoff.Core;
-using isdayoff.Core.Cache;
-using isdayoff.Tests.Fakes;
-
 namespace isdayoff.Tests.IsDayOffServiceTests
 {
     internal class IsDayOffServiceTestBase : TestBase
     {
-        protected IsDayOffService IsDayOffService;
+        protected IsDayOffService IsDayOffService { get; private set; }
         
         public override void Setup()
         {
             base.Setup();
             
-            IsDayOffService = new IsDayOffService(new IsDayOffApiClientStub(), new IsDayOffNoCache());
+            IsDayOffService = new IsDayOffService(ApiClientStub, CacheStub);
         }
     }
 }
