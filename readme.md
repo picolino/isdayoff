@@ -43,15 +43,15 @@ var settings = IsDayOffSettings.Build
                                .UseInMemoryCache() // Enable cache
                                .Create();
 var isDayOff = new IsDayOff(settings);
-var firstRequest = isDayOff.CheckDayAsync(DateTime.Today); // Performs request to external service
-var secondRequest = isDayOff.CheckDayAsync(DateTime.Today); // No request performs
+var firstRequest = await isDayOff.CheckDayAsync(DateTime.Today); // Performs request to external service
+var secondRequest = await isDayOff.CheckDayAsync(DateTime.Today); // No request performs
 ```
 
-_* Note that cache working per-method only. This means if you get day 
-off information for specific year (using `CheckYearAsync` method) 
-and next request trying to get information for any month (`CheckMonthAsync`) 
-or day (`CheckDayAsync`) of this year, additional request will be performed.
-However, it is likely this behavior will change in future._
+It works also if you trying to get day off information for inner date range:
+```c#
+var firstRequestForYear = await isDayOff.CheckYearAsync(DateTime.Today.Year); // Performs request to external service for current year
+var secondRequestForMonthWithinYear = await isDayOff.CheckMonthAsync(DateTime.Today.Year, 06); // No real request performs because year cache by previous request used
+```
 
 ### Custom cache implementation
 You can also inject your custom cache realization through 
