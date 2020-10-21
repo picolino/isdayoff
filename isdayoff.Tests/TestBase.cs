@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Threading;
 using isdayoff.Tests.Fakes;
 using NUnit.Framework;
 
@@ -13,6 +15,9 @@ namespace isdayoff.Tests
         [SetUp]
         public virtual void Setup()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
             ApiClientStub = new IsDayOffApiClientStub();
             CacheStub = new IsDayOffCacheStub();
             HttpClientStub = new HttpClientStub();

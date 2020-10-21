@@ -33,7 +33,7 @@ namespace isdayoff.Contract
 
         public override string ToString()
         {
-            return $"{DateTime} ({DayType})";
+            return $"{DateTime:d} ({DayType:G})";
         }
     }
 }
