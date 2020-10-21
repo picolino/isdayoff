@@ -59,6 +59,17 @@ namespace isdayoff.Tests.IsDayOffApiClientTests
         }
 
         [Test]
+        public void UnknownPassedCountryThrowsArgumentOutOfRangeException()
+        {
+            async Task Act()
+            {
+                await IsDayOffApiClient.GetDataAsync(04.08.Of(2020), 04.08.Of(2020), (Country) int.MaxValue, CancellationToken.None);
+            }
+
+            Assert.ThrowsAsync<ArgumentOutOfRangeException>(Act);
+        }
+
+        [Test]
         [TestCaseSource(nameof(InvalidTestData))]
         public Type ValidationWorksCorrectly(string responseStringContent,
                                              HttpStatusCode responseStatusCode)
