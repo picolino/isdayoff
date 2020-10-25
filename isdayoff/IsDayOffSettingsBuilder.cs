@@ -42,7 +42,7 @@ namespace isdayoff
         /// </summary>
         /// <param name="customCache">Custom cache implementation</param>
         [NotNull]
-        public IsDayOffSettingsBuilder UseCustomCache(IIsDayOffCache customCache)
+        public IsDayOffSettingsBuilder UseCustomCache([NotNull] IIsDayOffCache customCache)
         {
             cache = customCache ?? throw new ArgumentNullException(nameof(customCache));
             return this;
