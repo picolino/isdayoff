@@ -56,10 +56,10 @@ var secondRequestForMonthWithinYear = await isDayOff.CheckMonthAsync(DateTime.To
 
 ### Custom cache implementation
 You can also inject your custom cache realization through 
-implementation of `IIsDayOfCache` interface and register it in settings:
+implementation of `IIsDayOffCache` interface and register it in settings:
 
 ```c#
-var customCache = new CustomCache(); // CustomCache must implement IIsDayOfCache
+var customCache = new CustomCache(); // CustomCache must implement IIsDayOffCache
 var settings = IsDayOffSettings.Build
                                .UseCustomCache(customCache) // Inject cache
                                .Create();
