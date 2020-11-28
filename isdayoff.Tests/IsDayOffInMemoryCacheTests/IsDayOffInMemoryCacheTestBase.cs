@@ -2,7 +2,7 @@
 
 namespace isdayoff.Tests.IsDayOffInMemoryCacheTests
 {
-    internal class IsDayOffInMemoryTestBase : TestBase
+    internal class IsDayOffInMemoryCacheTestBase : TestBase
     {
         protected IsDayOffInMemoryCache IsDayOffInMemoryCache { get; private set; }
         
