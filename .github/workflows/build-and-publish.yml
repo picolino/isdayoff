@@ -18,10 +18,10 @@ jobs:
     name: Build and Deploy
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
 
       - name: Setup .NET Core ${{ env.NETCORE_VERSION }}
-        uses: actions/setup-dotnet@v1.6.0
+        uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: ${{ env.NETCORE_VERSION }}
 
@@ -48,7 +48,7 @@ jobs:
         run: dotnet nuget push "**/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
 
       - name: Upload NuGet package
-        uses: actions/upload-artifact@v2.1.4
+        uses: actions/upload-artifact@v2.2.1
         with:
           name: ${{ env.APP_NAME }}
           path: "**/*.nupkg"
