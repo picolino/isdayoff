@@ -10,7 +10,7 @@ env:
   APP_PACKAGE_PATH: './published'                           # set this to the path to your app project, defaults to the repository root
   NETCORE_VERSION: '3.1.200'                                # set this to the .NET Core version to use
   GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}   # set this to access token to github.com
-  GITHUB_TOKEN: ${{ github.token }}                         # set this to access token to github.com
+  GITHUB_API_KEY: ${{ github.token }}                         # set this to access token to github.com
   NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}               # set this to access token to nuget.org
 
 jobs:
@@ -39,10 +39,10 @@ jobs:
 
       - name: Add NuGet sources
         run: |
-          dotnet nuget add source https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY_OWNER }}/index.json --name github --username ${{ env.GITHUB_REPOSITORY_OWNER }} --password ${{ env.GITHUB_TOKEN }} --store-password-in-clear-text
+          dotnet nuget add source https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY_OWNER }}/index.json --name github
 
       - name: NuGet push on GitHub
-        run: dotnet nuget push "**/*.nupkg" --source github --skip-duplicate
+        run: dotnet nuget push "**/*.nupkg" --source github --api-key ${{ env.GITHUB_API_KEY }} --skip-duplicate
 
       - name: NuGet push on NuGet
         run: dotnet nuget push "**/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
