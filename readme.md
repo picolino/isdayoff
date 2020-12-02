@@ -81,7 +81,7 @@ var isDayOff = new IsDayOff(settings);
 ```
 
 Or you can enable and setup logging more flexible through default `TraceSources` configuration in `*.config` file of your application.  
-See [docs](https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/how-to-use-tracesource-and-filters-with-trace-listeners#to-create-and-initialize-trace-listeners-and-filters) for details
+See [docs](https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/how-to-use-tracesource-and-filters-with-trace-listeners#to-create-and-initialize-trace-listeners-and-filters) for details.  
 `TraceSource` for all logs within IsDayOff library named as `IsDayOff`
 
 ## FAQ
