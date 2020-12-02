@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using isdayoff.Contract;
-using isdayoff.Tests.Extensions;
+using isdayoff.Tests._Extensions;
 using NUnit.Framework;
 
 namespace isdayoff.Tests.IsDayOffServiceTests
@@ -14,7 +14,6 @@ namespace isdayoff.Tests.IsDayOffServiceTests
         public async Task IfCachedValueExistsThenCachedValueReturns()
         {
             CacheStub.CachedValue.Add(new DayOffDateTime(01.01.Of(2020), DayType.NotWorkingDay));
-            CacheStub.HasCachedValue = true;
             
             var result = await IsDayOffService.CheckDatesRangeAsync(01.01.Of(2020), 01.01.Of(2020), Country.Russia, CancellationToken.None);
 
@@ -25,7 +24,6 @@ namespace isdayoff.Tests.IsDayOffServiceTests
         public async Task IfNoCachedValueExistsThenApiResponseReturns()
         {
             ApiClientStub.Response = "1";
-            CacheStub.HasCachedValue = false;
             
             var result = await IsDayOffService.CheckDatesRangeAsync(04.08.Of(2020), 04.08.Of(2020), Country.Russia, CancellationToken.None);
 

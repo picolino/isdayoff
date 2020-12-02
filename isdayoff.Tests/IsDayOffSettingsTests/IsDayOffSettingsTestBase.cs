@@ -1,4 +1,5 @@
-﻿using isdayoff.Contract;
+﻿using System.Diagnostics;
+using isdayoff.Contract;
 
 namespace isdayoff.Tests.IsDayOffSettingsTests
 {
@@ -10,7 +11,7 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
         {
             base.Setup();
             
-            IsDayOffSettings = new IsDayOffSettings(CacheStub, Country.Russia);
+            IsDayOffSettings = new IsDayOffSettings(ApiBaseUrlStub, UserAgentStub, CacheStub, Country.Russia, SourceLevels.Off);
         }
     }
 }

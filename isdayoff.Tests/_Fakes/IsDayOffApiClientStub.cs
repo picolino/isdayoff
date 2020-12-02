@@ -5,7 +5,7 @@ using isdayoff.Contract;
 using isdayoff.Core;
 using isdayoff.Core.Responses;
 
-namespace isdayoff.Tests.Fakes
+namespace isdayoff.Tests._Fakes
 {
     internal class IsDayOffApiClientStub : IIsDayOffApiClient
     {

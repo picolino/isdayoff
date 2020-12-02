@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
 using isdayoff.Core.Cache;
+using isdayoff.Core.Exceptions;
 using JetBrains.Annotations;
 
 namespace isdayoff
@@ -13,23 +16,23 @@ namespace isdayoff
     [PublicAPI]
     public class IsDayOffSettingsBuilder
     {
+        private const string ApiBaseUrl = "https://isdayoff.ru/api/";
+        
         private Country defaultCountry = Country.Russia;
         private IIsDayOffCache cache = new IsDayOffNoCache();
+        private SourceLevels? logLevel = null;
+
+        private readonly string userAgent;
         
         internal IsDayOffSettingsBuilder()
         {
+            var currentAssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(2);
+            userAgent = $"isdayoff-dotnet-lib/{currentAssemblyVersion} (lib-maintainer:picolino;lib-feedback:contact@picolino.dev)";
         }
         
         /// <summary>
         /// Set up to use built-in in-memory cache
         /// </summary>
-        /// <remarks>
-        /// Note that cache working per-method only. This means if you get day 
-        /// off information for specific year (using <code>CheckYearAsync</code> method) 
-        /// and next request trying to get information for any month (<code>CheckMonthAsync</code>) 
-        /// or day (<code>CheckDayAsync</code>) of this year, additional request will be performed.
-        /// However, it is likely this behavior will change in future.
-        /// </remarks>
         [NotNull]
         public IsDayOffSettingsBuilder UseInMemoryCache()
         {
@@ -40,22 +43,34 @@ namespace isdayoff
         /// <summary>
         /// Set up custom cache implementation
         /// </summary>
-        /// <param name="customCache">Custom cache implementation</param>
+        /// <param name="newCache">Custom cache implementation</param>
+        /// <exception cref="ArgumentNullException">Thrown when customCache is set to null</exception>
         [NotNull]
-        public IsDayOffSettingsBuilder UseCustomCache([NotNull] IIsDayOffCache customCache)
+        public IsDayOffSettingsBuilder UseCustomCache([NotNull] IIsDayOffCache newCache)
         {
-            cache = customCache ?? throw new ArgumentNullException(nameof(customCache));
+            cache = newCache ?? throw new ArgumentNullException(nameof(cache), ErrorsMessages.CacheCanNotBeNull());
             return this;
         }
 
         /// <summary>
         /// Set up default country for methods without country in parameters
         /// </summary>
-        /// <param name="country">Country to set as default country</param>
+        /// <param name="newDefaultCountry">Country to set as default country</param>
         [NotNull]
-        public IsDayOffSettingsBuilder UseDefaultCountry(Country country)
+        public IsDayOffSettingsBuilder UseDefaultCountry(Country newDefaultCountry)
         {
-            defaultCountry = country;
+            defaultCountry = newDefaultCountry;
+            return this;
+        }
+
+        /// <summary>
+        /// Enable logging with log level specified
+        /// </summary>
+        /// <param name="newLogLevel">Tracing log level</param>
+        [NotNull]
+        public IsDayOffSettingsBuilder UseLogging(SourceLevels newLogLevel)
+        {
+            logLevel = newLogLevel;
             return this;
         }
 
@@ -63,11 +78,10 @@ namespace isdayoff
         /// Build settings
         /// </summary>
         /// <returns>Settings</returns>
-        /// <exception cref="ArgumentNullException">Thrown when some not null property is set to null</exception>
         [NotNull]
         public IsDayOffSettings Create()
         {
-            return new IsDayOffSettings(cache, defaultCountry);
+            return new IsDayOffSettings(ApiBaseUrl, userAgent, cache, defaultCountry, logLevel);
         }
 
         [NotNull]

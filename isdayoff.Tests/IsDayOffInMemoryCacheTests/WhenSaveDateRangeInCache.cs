@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using isdayoff.Contract;
-using isdayoff.Tests.Extensions;
+using isdayoff.Tests._Extensions;
 using NUnit.Framework;
 
 namespace isdayoff.Tests.IsDayOffInMemoryCacheTests

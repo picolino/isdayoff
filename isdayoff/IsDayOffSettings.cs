@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
 using isdayoff.Core.Exceptions;
@@ -21,14 +22,24 @@ namespace isdayoff
         [NotNull]
         public static IsDayOffSettings Default => Build.Create();
         
-        internal IsDayOffSettings(IIsDayOffCache cache, Country defaultCountry)
+        internal IsDayOffSettings(string apiBaseUrl, 
+                                  string userAgent, 
+                                  IIsDayOffCache cache, 
+                                  Country defaultCountry, 
+                                  SourceLevels? traceLevel)
         {
-            Cache = cache ?? throw new ArgumentNullException(nameof(cache), ErrorsMessages.CacheCanNotBeNull());
+            ApiBaseUrl = apiBaseUrl;
+            UserAgent = userAgent;
+            Cache = cache;
             DefaultCountry = defaultCountry;
+            TraceLevel = traceLevel;
         }
         
         [NotNull]
         internal IIsDayOffCache Cache { get; }
         internal Country DefaultCountry { get; }
+        internal string ApiBaseUrl { get; } 
+        internal string UserAgent { get; } 
+        internal SourceLevels? TraceLevel { get; }
     }
 }

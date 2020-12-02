@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using isdayoff.Contract;
 using isdayoff.Core.Extensions;
-using isdayoff.Tests.Extensions;
+using isdayoff.Tests._Extensions;
 using NUnit.Framework;
 
 namespace isdayoff.Tests.IsDayOffInMemoryCacheTests
 {
-    internal class WhenTryGetCachedDatesRange : IsDayOffInMemoryCacheTestBase
+    internal class WhenGetCachedDatesRangeOrDefault : IsDayOffInMemoryCacheTestBase
     {
         private Random random;
         
@@ -29,13 +29,13 @@ namespace isdayoff.Tests.IsDayOffInMemoryCacheTests
                                                                  new List<DayOffDateTime> {new DayOffDateTime(01.01.Of(2020), DayType.NotWorkingDay)});
             }
             
-            var found = await IsDayOffInMemoryCache.TryGetCachedDatesRange(01.01.Of(2020), 01.01.Of(2020), Country.Russia, out _);
+            var result = await IsDayOffInMemoryCache.GetCachedDatesRangeOrDefault(01.01.Of(2020), 01.01.Of(2020), Country.Russia);
             
-            Assert.That(found, Is.EqualTo(cacheHasValue));
+            Assert.That(result, cacheHasValue ? Is.Not.Null : Is.Null);
         }
 
         [Test]
-        public async Task IfCacheHasOuterDatesRangeItReturnsTrueForInnerDatesRangeRequest()
+        public async Task IfCacheHasOuterDatesRangeItReturnsNotNullForInnerDatesRangeRequest()
         {
             var cachedFrom = 01.01.Of(2020);
             var cachedTo = 30.01.Of(2020);
@@ -44,14 +44,13 @@ namespace isdayoff.Tests.IsDayOffInMemoryCacheTests
             
             await IsDayOffInMemoryCache.SaveDateRangeInCache(cachedFrom, cachedTo, Country.Russia, GenerateDayOffDateTimesInDateRange(cachedFrom, cachedTo));
             
-            var found = await IsDayOffInMemoryCache.TryGetCachedDatesRange(requestFrom, requestTo, Country.Russia, out var result);
+            var found = await IsDayOffInMemoryCache.GetCachedDatesRangeOrDefault(requestFrom, requestTo, Country.Russia);
             
-            Assert.That(found, Is.EqualTo(true));
-            Assert.That(result.Count, Is.EqualTo(10));
+            Assert.That(found.Count, Is.EqualTo(10));
         }
 
         [Test]
-        public async Task IfCacheNotFullyCoveredRequestedDatesThenCacheReturnsFalse()
+        public async Task IfCacheNotFullyCoveredRequestedDatesThenCacheReturnsNull()
         {
             var cachedFrom = 01.01.Of(2020);
             var cachedTo = 15.01.Of(2020);
@@ -60,9 +59,9 @@ namespace isdayoff.Tests.IsDayOffInMemoryCacheTests
             
             await IsDayOffInMemoryCache.SaveDateRangeInCache(cachedFrom, cachedTo, Country.Russia, GenerateDayOffDateTimesInDateRange(cachedFrom, cachedTo));
             
-            var found = await IsDayOffInMemoryCache.TryGetCachedDatesRange(requestFrom, requestTo, Country.Russia, out _);
+            var found = await IsDayOffInMemoryCache.GetCachedDatesRangeOrDefault(requestFrom, requestTo, Country.Russia);
             
-            Assert.That(found, Is.EqualTo(false));
+            Assert.That(found, Is.Null);
         }
 
         private List<DayOffDateTime> GenerateDayOffDateTimesInDateRange(DateTime from, DateTime to, DayType dayType = DayType.WorkingDay, bool randomizedDateType = false)

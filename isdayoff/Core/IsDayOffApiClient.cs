@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -6,19 +8,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using isdayoff.Contract;
 using isdayoff.Core.Exceptions;
+using isdayoff.Core.Extensions;
 using isdayoff.Core.Http;
 using isdayoff.Core.Responses;
+using isdayoff.Core.Tracing;
 
 namespace isdayoff.Core
 {
     internal class IsDayOffApiClient : IIsDayOffApiClient
     {
-        private readonly IHttpClientFactory httpClientFactory;
+        private readonly HttpClientFactory httpClientFactory;
         private readonly string baseUrl;
+        private readonly string userAgent;
 
-        public IsDayOffApiClient(string baseUrl, IHttpClientFactory httpClientFactory)
+        public IsDayOffApiClient(string baseUrl, string userAgent, HttpClientFactory httpClientFactory)
         {
             this.baseUrl = baseUrl;
+            this.userAgent = userAgent;
             this.httpClientFactory = httpClientFactory;
         }
 
@@ -37,8 +43,16 @@ namespace isdayoff.Core
 
                 try
                 {
+                    httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
+
+                    IsDayOff.Tracer.TraceEvent(TraceEventType.Information, TraceEventIds.Requesting.REQUEST_SENDING,
+                                               "Sending HTTP GET: '{0}'", requestUrl);
+                    
                     var response = await httpClient.GetAsync(requestUrl, cancellationToken);
                     var responseAsString = await response.Content.ReadAsStringAsync();
+
+                    IsDayOff.Tracer.TraceEvent(TraceEventType.Information, TraceEventIds.Requesting.REQUEST_SENT,
+                                               "Response received with status code: '{0}' and string content: '{1}'", response.StatusCode, responseAsString);
 
                     ValidateResponse(from, to, country, response, responseAsString);
 
@@ -46,6 +60,9 @@ namespace isdayoff.Core
                 }
                 catch (Exception e)
                 {
+                    IsDayOff.Tracer.TraceEvent(TraceEventType.Error, TraceEventIds.Requesting.REQUEST_SENDING_ERROR,
+                                               "An error occured while processing request: '{0}'\n{1}", requestUrl, e);
+                    
                     throw new IsDayOffExternalServiceException(e);
                 }
             }
@@ -67,7 +84,7 @@ namespace isdayoff.Core
             return stringBuilder.ToString();
         }
 
-        private void ValidateResponse(DateTime from, DateTime to, Country country, HttpResponseMessage response, string responseContent)
+        private static void ValidateResponse(DateTime from, DateTime to, Country country, HttpResponseMessage response, string responseContent)
         {
             switch (response.StatusCode)
             {
@@ -81,9 +98,15 @@ namespace isdayoff.Core
                     response.EnsureSuccessStatusCode();
                     break;
             }
+            
+            var requestedDaysCount = from.ByDaysTill(to).Count();
+            if (requestedDaysCount > responseContent.Length)
+            {
+                throw new DaysCountMismatchException(requestedDaysCount, responseContent.Length);
+            }
         }
         
-        private string GetCountryCode(Country country)
+        private static string GetCountryCode(Country country)
         {
             switch (country)
             {

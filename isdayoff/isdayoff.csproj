@@ -16,8 +16,9 @@
         <RepositoryType>git</RepositoryType>
         <PackageIcon>isdayoff.png</PackageIcon>
         <PackageIconUrl>https://raw.githubusercontent.com/picolino/isdayoff/master/isdayoff/isdayoff.png</PackageIconUrl>
-        <PackageReleaseNotes>- Add dates range support
-- Cache API changed</PackageReleaseNotes>
+        <PackageReleaseNotes>- Cache API changed
+- Add User-Agent info
+- Add more validation and error-handling</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>

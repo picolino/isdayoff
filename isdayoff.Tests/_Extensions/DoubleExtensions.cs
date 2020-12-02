@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace isdayoff.Tests.Extensions
+namespace isdayoff.Tests._Extensions
 {
     public static class DoubleExtensions
     {

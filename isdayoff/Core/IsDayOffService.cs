@@ -29,17 +29,17 @@ namespace isdayoff.Core
                 to = from;
                 from = temp;
             }
+
+            var result = await cache.GetCachedDatesRangeOrDefault(from, to, country);
             
-            if (await cache.TryGetCachedDatesRange(from, to, country, out var cachedResult))
+            if (result is null)
             {
-                return cachedResult;
+                var response = await apiClient.GetDataAsync(from, to, country, cancellationToken);
+                result = GenerateDayOffDateTimeList(response.Result, from.ByDaysTill(to).ToList());
+
+                await cache.SaveDateRangeInCache(from, to, country, result);
             }
-                
-            var response = await apiClient.GetDataAsync(from, to, country, cancellationToken);
-            var result = GenerateDayOffDateTimeList(response.Result, from.ByDaysTill(to).ToList());
-
-            await cache.SaveDateRangeInCache(from, to, country, result);
-
+            
             return result;
         }
 
@@ -71,7 +71,7 @@ namespace isdayoff.Core
                 case '4':
                     return DayType.WorkingDayAdvanced;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(character), character, ErrorsMessages.UnknownResult());
+                    throw new ArgumentOutOfRangeException(nameof(character), character, ErrorsMessages.UnknownResponseDayType());
             }
         }
     }

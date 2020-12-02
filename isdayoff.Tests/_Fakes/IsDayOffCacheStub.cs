@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
 
-namespace isdayoff.Tests.Fakes
+namespace isdayoff.Tests._Fakes
 {
     public class IsDayOffCacheStub : IIsDayOffCache
     {
-        public bool HasCachedValue { get; set; }
         public List<DayOffDateTime> CachedValue { get; set; } = new List<DayOffDateTime>();
         
         public Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, List<DayOffDateTime> dayOffDateTimeList)
@@ -17,10 +16,9 @@ namespace isdayoff.Tests.Fakes
             return Task.CompletedTask;
         }
 
-        public Task<bool> TryGetCachedDatesRange(DateTime from, DateTime to, Country country, out List<DayOffDateTime> result)
+        public Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country)
         {
-            result = CachedValue;
-            return Task.FromResult(HasCachedValue);
+            return Task.FromResult(CachedValue.Count == 0 ? default : CachedValue);
         }
     }
 }

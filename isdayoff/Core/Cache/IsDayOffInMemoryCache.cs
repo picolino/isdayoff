@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
 using isdayoff.Core.Extensions;
+using isdayoff.Core.Tracing;
 
 namespace isdayoff.Core.Cache
 {
@@ -27,21 +29,24 @@ namespace isdayoff.Core.Cache
                 {
                     Cache[(country, dayOffDateTime.DateTime)] = dayOffDateTime;
                 }
+                
+                IsDayOff.Tracer.TraceEvent(TraceEventType.Information, TraceEventIds.Caching.CACHE_SAVE_VALUE,
+                                           "Day off info of '{0}' days from '{1}' to '{2}' for '{3}' saved into in-memory cache", dayOffDateTimeList.Count, from, to, country);
 
                 return Task.CompletedTask;
             }
         }
 
-        public Task<bool> TryGetCachedDatesRange(DateTime from, DateTime to, Country country, out List<DayOffDateTime> result)
+        public Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country)
         {
-            result = new List<DayOffDateTime>();
-            
-            var hasInCache = true;
+            var result = new List<DayOffDateTime>();
 
             var days = from.ByDaysTill(to).ToList();
 
             lock (locker)
             {
+                var notFoundInCache = false;
+                
                 foreach (var dateTime in days)
                 {
                     if (Cache.TryGetValue((country, dateTime), out var cachedDayOffDateTime))
@@ -50,14 +55,25 @@ namespace isdayoff.Core.Cache
                     }
                     else
                     {
-                        hasInCache = false;
                         result = default;
+                        notFoundInCache = true;
                         break;
                     }
                 }
+
+                if (notFoundInCache)
+                {
+                    IsDayOff.Tracer.TraceEvent(TraceEventType.Information, TraceEventIds.Caching.CACHE_LOAD_VALUE_NOT_FOUND,
+                                               "Day off info from '{0}' to '{1}' of '{2}' not found in in-memory cache", from, to, country);
+                }
+                else
+                {
+                    IsDayOff.Tracer.TraceEvent(TraceEventType.Information, TraceEventIds.Caching.CACHE_LOAD_VALUE_FOUND,
+                                               "Day off info from '{0}' to '{1}' of '{2}' found in in-memory cache", from, to, country);
+                }
             }
 
-            return Task.FromResult(hasInCache);
+            return Task.FromResult(result);
         }
     }
 }

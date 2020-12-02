@@ -68,6 +68,22 @@ var isDayOff = new IsDayOff(settings);
 
 It is useful if you want to cache external service responses in file or in database.
 
+### Internal logging
+
+This library provides additional trace logging.  
+You can enable logging through settings this way:
+
+```c#
+var settings = IsDayOffSettings.Build
+                               .UseLogging(SourceLevels.All) // Enable debug logs and set required log level
+                               .Create();
+var isDayOff = new IsDayOff(settings);
+```
+
+Or you can enable and setup logging more flexible through default `TraceSources` configuration in `*.config` file of your application.  
+See [docs](https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/how-to-use-tracesource-and-filters-with-trace-listeners#to-create-and-initialize-trace-listeners-and-filters) for details
+`TraceSource` for all logs within IsDayOff library named as `IsDayOff`
+
 ## FAQ
 **Q: Is this library fully thread safe?**  
 A: Yes. You can use one instance between multiple threads with no doubt.

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using isdayoff.Core.Extensions;
-using isdayoff.Tests.Extensions;
+using isdayoff.Tests._Extensions;
 using NUnit.Framework;
 
 namespace isdayoff.Tests.ExtensionsTests

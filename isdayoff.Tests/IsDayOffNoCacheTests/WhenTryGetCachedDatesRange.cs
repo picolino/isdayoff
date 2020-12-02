@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Threading.Tasks;
 using isdayoff.Contract;
-using isdayoff.Tests.Extensions;
+using isdayoff.Tests._Extensions;
 using NUnit.Framework;
 
 namespace isdayoff.Tests.IsDayOffNoCacheTests
@@ -11,20 +11,11 @@ namespace isdayoff.Tests.IsDayOffNoCacheTests
     {
         [Test]
         [TestCaseSource(nameof(RandomCacheRequestsTestData))]
-        public async Task FalseAlwaysReturns(DateTime from, DateTime to, Country country)
+        public async Task NullAlwaysReturns(DateTime from, DateTime to, Country country)
         {
-            var cacheFound = await IsDayOffNoCache.TryGetCachedDatesRange(from, to, country, out _);
+            var cacheFound = await IsDayOffNoCache.GetCachedDatesRangeOrDefault(from, to, country);
 
-            Assert.That(cacheFound, Is.EqualTo(false));
-        }
-
-        [Test]
-        [TestCaseSource(nameof(RandomCacheRequestsTestData))]
-        public async Task NullListAlwaysReturns(DateTime from, DateTime to, Country country)
-        {
-            await IsDayOffNoCache.TryGetCachedDatesRange(from, to, country, out var cacheResultList);
-
-            Assert.That(cacheResultList, Is.Null);
+            Assert.That(cacheFound, Is.Null);
         }
         
         private static IEnumerable RandomCacheRequestsTestData()

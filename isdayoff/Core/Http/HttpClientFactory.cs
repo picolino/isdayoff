@@ -1,10 +1,19 @@
-﻿namespace isdayoff.Core.Http
+﻿using System.Net.Http;
+
+namespace isdayoff.Core.Http
 {
-    internal class HttpClientFactory : IHttpClientFactory
+    internal class HttpClientFactory
     {
-        public IHttpClient CreateHttpClient()
+        private readonly HttpMessageHandler httpClientHandler;
+
+        public HttpClientFactory(HttpMessageHandler httpClientHandler)
         {
-            return new HttpClient();
+            this.httpClientHandler = httpClientHandler;
+        }
+        
+        public HttpClient CreateHttpClient()
+        {
+            return new HttpClient(httpClientHandler);
         }
     }
 }

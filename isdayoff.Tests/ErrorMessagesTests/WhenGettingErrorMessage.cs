@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Threading;
 using isdayoff.Contract;
 using isdayoff.Core.Exceptions;
-using isdayoff.Tests.Extensions;
+using isdayoff.Tests._Extensions;
 using NUnit.Framework;
 
 namespace isdayoff.Tests.ErrorMessagesTests
@@ -29,10 +29,12 @@ namespace isdayoff.Tests.ErrorMessagesTests
             var errorMessagesFunctions = new List<Func<string>>
                                {
                                    ErrorsMessages.UnknownCountry,
-                                   ErrorsMessages.UnknownResult,
+                                   ErrorsMessages.UnknownResponseDayType,
                                    ErrorsMessages.CacheCanNotBeNull,
+                                   ErrorsMessages.SettingCanNotBeNull,
                                    ErrorsMessages.SomethingWrongWithTheService,
-                                   ErrorsMessages.ExternalServiceDidNotHandleTheRequest,
+                                   ErrorsMessages.ExternalServiceDidNotHandleTheRequestSeeInnerException,
+                                   () => ErrorsMessages.DaysCountMismatch(4, 2),
                                    () => ErrorsMessages.DatesRangeNotSupports(04.08.Of(2020), 04.08.Of(2020), Country.Russia),
                                    () => ErrorsMessages.CanNotFindDayOffInfo(04.08.Of(2020), 04.08.Of(2020), Country.Russia),
                                };

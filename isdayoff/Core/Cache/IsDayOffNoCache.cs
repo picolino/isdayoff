@@ -13,10 +13,9 @@ namespace isdayoff.Core.Cache
             return Task.CompletedTask;
         }
 
-        public Task<bool> TryGetCachedDatesRange(DateTime from, DateTime to, Country country, out List<DayOffDateTime> result)
+        public Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country)
         {
-            result = default;
-            return Task.FromResult(false);
+            return Task.FromResult(default(List<DayOffDateTime>));
         }
     }
 }

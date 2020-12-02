@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using isdayoff.Contract;
@@ -16,12 +19,13 @@ namespace isdayoff
     /// Basic class for operating with isdayoff API
     /// </summary>
     [PublicAPI]
+    [ExcludeFromCodeCoverage]
     public class IsDayOff
     {
+        internal static readonly TraceSource Tracer = new TraceSource(nameof(IsDayOff));
+        
         private readonly IsDayOffSettings settings;
         private readonly IsDayOffService service;
-        
-        private const string ApiBaseUrl = "https://isdayoff.ru/api/";
         
         /// <summary>
         /// Makes IsDayOff with default settings.
@@ -36,10 +40,15 @@ namespace isdayoff
         /// </summary>
         /// <param name="settings">Settings</param>
         /// <exception cref="ArgumentNullException">Thrown when some not null property is set to null</exception>
-        public IsDayOff(IsDayOffSettings settings)
+        public IsDayOff([NotNull] IsDayOffSettings settings)
         {
-            this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            service = new IsDayOffService(new IsDayOffApiClient(ApiBaseUrl, new HttpClientFactory()), settings.Cache);
+            if (settings.TraceLevel.HasValue)
+            {
+                Tracer.Switch.Level = settings.TraceLevel.Value;
+            }
+            
+            this.settings = settings ?? throw new ArgumentNullException(nameof(settings), ErrorsMessages.SettingCanNotBeNull());
+            service = new IsDayOffService(new IsDayOffApiClient(settings.ApiBaseUrl, settings.UserAgent, new HttpClientFactory(new HttpClientHandler())), settings.Cache);
         }
         
         /// <summary>

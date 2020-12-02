@@ -12,6 +12,6 @@ namespace isdayoff.Contract.Abstractions
     public interface IIsDayOffCache
     {
         Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, List<DayOffDateTime> dayOffDateTimeList);
-        Task<bool> TryGetCachedDatesRange(DateTime from, DateTime to, Country country, out List<DayOffDateTime> result);
+        Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country);
     }
 }

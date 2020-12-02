@@ -15,11 +15,25 @@ namespace isdayoff.Core.Exceptions
                        : "Cache implementation can't be null. Cache is disabled by-default so you dont need to set it to null";
         }
 
+        public static string SettingCanNotBeNull()
+        {
+            return IsRussian
+                       ? "Реализация настроек не может быть null"
+                       : "Settings can't be null";
+        }
+
         public static string CanNotFindDayOffInfo(DateTime from, DateTime to, Country country)
         {
             return IsRussian
                        ? $"Не найдена информация в диапазоне '{from.ToShortDateString()}-{to.ToShortDateString()}' для страны '{country}'"
                        : $"Cannot find day off information in dates range '{from.ToShortDateString()}-{to.ToShortDateString()}' for country '{country}'";
+        }
+
+        public static string DaysCountMismatch(int requestDays, int responseDays)
+        {
+            return IsRussian
+                       ? $"Получена неполная информация о днях. Запрошены данные по '{requestDays}' дням, получено по '{responseDays}' дням"
+                       : $"Received day off info is not full. Requested for '{requestDays}' days, but got only for '{responseDays}' days";
         }
 
         public static string DatesRangeNotSupports(DateTime from, DateTime to, Country country)
@@ -36,7 +50,7 @@ namespace isdayoff.Core.Exceptions
                        : "Something wrong with service";
         }
 
-        public static string ExternalServiceDidNotHandleTheRequest()
+        public static string ExternalServiceDidNotHandleTheRequestSeeInnerException()
         {
             return IsRussian
                        ? "Внешнему сервису не удалось обработать запрос. Подробности можно посмотреть во внутреннем исключении"
@@ -50,11 +64,11 @@ namespace isdayoff.Core.Exceptions
                        : "Unknown country";
         }
 
-        public static string UnknownResult()
+        public static string UnknownResponseDayType()
         {
             return IsRussian
-                       ? "Неизвестный результат"
-                       : "Unknown result";
+                       ? "Неизвестный ответ от сервиса"
+                       : "Unknown response from remote service";
         }
     }
 }

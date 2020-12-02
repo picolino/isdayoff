@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using isdayoff.Contract;
 using isdayoff.Core.Cache;
 using NUnit.Framework;
@@ -22,6 +23,14 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
             var builder = IsDayOffSettings.Build.UseDefaultCountry(country).Create();
 
             Assert.That(builder.DefaultCountry, Is.EqualTo(country));
+        }
+
+        [Test]
+        public void TraceLevelIsEqualToPassedTraceLevel([Values] SourceLevels traceLevel)
+        {
+            var builder = IsDayOffSettings.Build.UseLogging(traceLevel).Create();
+
+            Assert.That(builder.TraceLevel, Is.EqualTo(traceLevel));
         }
 
         [Test]
