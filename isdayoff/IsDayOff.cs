@@ -40,7 +40,19 @@ namespace isdayoff
         /// </summary>
         /// <param name="settings">Settings</param>
         /// <exception cref="ArgumentNullException">Thrown when some not null property is set to null</exception>
-        public IsDayOff([NotNull] IsDayOffSettings settings)
+        public IsDayOff([NotNull] IsDayOffSettings settings) : this(settings, 
+                                                                    new IsDayOffApiClient(settings.ApiBaseUrl, 
+                                                                                          settings.UserAgent, 
+                                                                                          new HttpClientFactory(new HttpClientHandler())))
+        {
+        }
+
+        /// <summary>
+        /// Constructor for testing purposes. Should not be used by regular users
+        /// </summary>
+        /// <param name="settings">Settings</param>
+        /// <param name="apiClient">Api client</param>
+        internal IsDayOff([NotNull] IsDayOffSettings settings, IIsDayOffApiClient apiClient)
         {
             if (settings.TraceLevel.HasValue)
             {
@@ -48,7 +60,7 @@ namespace isdayoff
             }
             
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings), ErrorsMessages.SettingCanNotBeNull());
-            service = new IsDayOffService(new IsDayOffApiClient(settings.ApiBaseUrl, settings.UserAgent, new HttpClientFactory(new HttpClientHandler())), settings.Cache);
+            service = new IsDayOffService(apiClient, settings.Cache);
         }
         
         /// <summary>
@@ -150,7 +162,7 @@ namespace isdayoff
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
         public async Task<List<DayOffDateTime>> CheckMonthAsync(int year, int month, Country country, CancellationToken cancellationToken)
         {
-            var monthDateTime = new DateTime(year, month, 0);
+            var monthDateTime = new DateTime(year, month, 1);
             
             return await CheckDatesRangeAsync(monthDateTime, monthDateTime.EndOfMonth(), country, cancellationToken);
         }

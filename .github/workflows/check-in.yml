@@ -1,7 +1,8 @@
 name: Check-in
 
 env:
-  GITHUB_TOKEN: ${{ github.token }}                         # set this to access token to github.com
+  NETCORE_VERSION: '5.0.103'                                # set this to the .NET Core version to use
+  GITHUB_API_KEY: ${{ github.token }}                       # set this to access token to github.com
 
 on:
   push:
@@ -19,7 +20,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.101
+          dotnet-version: ${{ env.NETCORE_VERSION }}
 
       - name: Restore
         run: dotnet restore
@@ -33,5 +34,5 @@ jobs:
       - name: Publish test coverage report to coveralls.io
         uses: coverallsapp/github-action@v1.1.2
         with:
-          github-token: ${{ env.GITHUB_TOKEN }}
+          github-token: ${{ env.GITHUB_API_KEY }}
           path-to-lcov: ./isdayoff.Tests/coverage/lcov.info
