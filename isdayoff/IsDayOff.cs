@@ -162,7 +162,7 @@ namespace isdayoff
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
         public async Task<List<DayOffDateTime>> CheckMonthAsync(int year, int month, Country country, CancellationToken cancellationToken)
         {
-            var monthDateTime = new DateTime(year, month, 0);
+            var monthDateTime = new DateTime(year, month, 1);
             
             return await CheckDatesRangeAsync(monthDateTime, monthDateTime.EndOfMonth(), country, cancellationToken);
         }
