@@ -1,8 +1,5 @@
-﻿using JetBrains.Annotations;
-
-namespace isdayoff.Contract
+﻿namespace isdayoff.Contract
 {
-    [PublicAPI]
     public enum DayType
     {
         WorkingDay = 0,

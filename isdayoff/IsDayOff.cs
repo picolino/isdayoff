@@ -11,14 +11,12 @@ using isdayoff.Core;
 using isdayoff.Core.Exceptions;
 using isdayoff.Core.Extensions;
 using isdayoff.Core.Http;
-using JetBrains.Annotations;
 
 namespace isdayoff
 {
     /// <summary>
     /// Basic class for operating with isdayoff API
     /// </summary>
-    [PublicAPI]
     [ExcludeFromCodeCoverage]
     public class IsDayOff
     {
@@ -40,29 +38,25 @@ namespace isdayoff
         /// </summary>
         /// <param name="settings">Settings</param>
         /// <exception cref="ArgumentNullException">Thrown when some not null property is set to null</exception>
-        public IsDayOff([NotNull] IsDayOffSettings settings) : this(settings, 
-                                                                    new IsDayOffApiClient(settings.ApiBaseUrl, 
-                                                                                          settings.UserAgent, 
-                                                                                          new HttpClientFactory(new HttpClientHandler())))
+        public IsDayOff(IsDayOffSettings settings) : this(settings,
+                                                          new IsDayOffApiClient(settings.ApiBaseUrl,
+                                                                                settings.UserAgent,
+                                                                                new HttpClientFactory(new HttpClientHandler())))
         {
         }
 
-        /// <summary>
-        /// Constructor for testing purposes. Should not be used by regular users
-        /// </summary>
-        /// <param name="settings">Settings</param>
-        /// <param name="apiClient">Api client</param>
-        internal IsDayOff([NotNull] IsDayOffSettings settings, IIsDayOffApiClient apiClient)
+        internal IsDayOff(IsDayOffSettings settings, IIsDayOffApiClient apiClient)
         {
+            this.settings = settings ?? throw new ArgumentNullException(nameof(settings), ErrorsMessages.SettingCanNotBeNull());
+            
             if (settings.TraceLevel.HasValue)
             {
                 Tracer.Switch.Level = settings.TraceLevel.Value;
             }
             
-            this.settings = settings ?? throw new ArgumentNullException(nameof(settings), ErrorsMessages.SettingCanNotBeNull());
             service = new IsDayOffService(apiClient, settings.Cache);
         }
-        
+
         /// <summary>
         /// Get dates with day off information for year of default country
         /// </summary>

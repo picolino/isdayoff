@@ -13,7 +13,7 @@ namespace isdayoff.Core.Http
         
         public HttpClient CreateHttpClient()
         {
-            return new HttpClient(httpClientHandler);
+            return new HttpClient(httpClientHandler, false);
         }
     }
 }

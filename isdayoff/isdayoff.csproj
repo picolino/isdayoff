@@ -2,21 +2,25 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <AssemblyVersion>1.3.1</AssemblyVersion>
-        <PackageVersion>1.3.1</PackageVersion>
+        <AssemblyVersion>1.3.2</AssemblyVersion>
+        <PackageVersion>1.3.2</PackageVersion>
         <Title>isdayoff</Title>
         <Authors>Danila Chervonny (contact@picolino.dev)</Authors>
         <Description>IsDayOff is a .NET library for API isdayoff service (https://isdayoff.ru/)</Description>
         <Copyright>Danila Chervonny, Copyright © 2021 MIT</Copyright>
         <PackageTags>IsDayOff, Date, Time, DateTime, Daily, IsWorkday, Holidays</PackageTags>
-        <FileVersion>1.3.1</FileVersion>
+        <FileVersion>1.3.2</FileVersion>
         <PackageProjectUrl>https://isdayoff.ru/</PackageProjectUrl>
         <license>MIT</license>
         <RepositoryUrl>https://github.com/picolino/isdayoff</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageIcon>isdayoff.png</PackageIcon>
         <PackageIconUrl>https://raw.githubusercontent.com/picolino/isdayoff/master/isdayoff/isdayoff.png</PackageIconUrl>
-        <PackageReleaseNotes>- Fix CheckMonthAsync method raises exception</PackageReleaseNotes>
+        <PackageReleaseNotes>- Fix HttpHandler disposing in multiple calls same IsDayOff instance</PackageReleaseNotes>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\isdayoff.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,10 +31,6 @@
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
             <_Parameter1>isdayoff.Tests</_Parameter1>
         </AssemblyAttribute>
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
     </ItemGroup>
     
 </Project>

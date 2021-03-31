@@ -5,7 +5,6 @@ using isdayoff.Contract;
 using isdayoff.Contract.Abstractions;
 using isdayoff.Core.Cache;
 using isdayoff.Core.Exceptions;
-using JetBrains.Annotations;
 
 namespace isdayoff
 {
@@ -13,7 +12,6 @@ namespace isdayoff
     /// Class for construct IsDayOff settings.
     /// Should be created only from <see cref="IsDayOffSettings.Build"/> property of <see cref="IsDayOffSettings"/> class.
     /// </summary>
-    [PublicAPI]
     public class IsDayOffSettingsBuilder
     {
         private const string ApiBaseUrl = "https://isdayoff.ru/api/";
@@ -33,7 +31,6 @@ namespace isdayoff
         /// <summary>
         /// Set up to use built-in in-memory cache
         /// </summary>
-        [NotNull]
         public IsDayOffSettingsBuilder UseInMemoryCache()
         {
             cache = new IsDayOffInMemoryCache();
@@ -45,8 +42,7 @@ namespace isdayoff
         /// </summary>
         /// <param name="newCache">Custom cache implementation</param>
         /// <exception cref="ArgumentNullException">Thrown when customCache is set to null</exception>
-        [NotNull]
-        public IsDayOffSettingsBuilder UseCustomCache([NotNull] IIsDayOffCache newCache)
+        public IsDayOffSettingsBuilder UseCustomCache(IIsDayOffCache newCache)
         {
             cache = newCache ?? throw new ArgumentNullException(nameof(cache), ErrorsMessages.CacheCanNotBeNull());
             return this;
@@ -56,7 +52,6 @@ namespace isdayoff
         /// Set up default country for methods without country in parameters
         /// </summary>
         /// <param name="newDefaultCountry">Country to set as default country</param>
-        [NotNull]
         public IsDayOffSettingsBuilder UseDefaultCountry(Country newDefaultCountry)
         {
             defaultCountry = newDefaultCountry;
@@ -67,7 +62,6 @@ namespace isdayoff
         /// Enable logging with log level specified
         /// </summary>
         /// <param name="newLogLevel">Tracing log level</param>
-        [NotNull]
         public IsDayOffSettingsBuilder UseLogging(SourceLevels newLogLevel)
         {
             logLevel = newLogLevel;
@@ -78,13 +72,16 @@ namespace isdayoff
         /// Build settings
         /// </summary>
         /// <returns>Settings</returns>
-        [NotNull]
         public IsDayOffSettings Create()
         {
             return new IsDayOffSettings(ApiBaseUrl, userAgent, cache, defaultCountry, logLevel);
         }
 
-        [NotNull]
+        /// <summary>
+        /// Converts implicit IsDayOffSettingsBuilder to IsDayOffSettings object
+        /// </summary>
+        /// <param name="builder">Builder</param>
+        /// <returns>Built IsDayOffSettings object</returns>
         public static implicit operator IsDayOffSettings(IsDayOffSettingsBuilder builder)
         {
             return builder.Create();
