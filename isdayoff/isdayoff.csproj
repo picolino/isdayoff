@@ -16,7 +16,8 @@
         <RepositoryType>git</RepositoryType>
         <PackageIcon>isdayoff.png</PackageIcon>
         <PackageIconUrl>https://raw.githubusercontent.com/picolino/isdayoff/master/isdayoff/isdayoff.png</PackageIconUrl>
-        <PackageReleaseNotes>- Fix HttpHandler disposing in multiple calls same IsDayOff instance</PackageReleaseNotes>
+        <PackageReleaseNotes>- Fix HttpHandler disposing in multiple calls same IsDayOff instance
+- Add xml docs</PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
