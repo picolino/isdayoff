@@ -1,5 +1,4 @@
-﻿
-namespace isdayoff.Contract
+﻿namespace isdayoff.Contract
 {
     public enum Country
     {
@@ -7,6 +6,8 @@ namespace isdayoff.Contract
         Belarus,
         Ukraine,
         Kazakhstan,
-        USA
+        USA,
+        Uzbekistan,
+        Turkey
     }
 }
