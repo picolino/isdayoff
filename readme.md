@@ -6,6 +6,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/picolino/isdayoff/badge)](https://www.codefactor.io/repository/github/picolino/isdayoff)
 [![Coverage Status](https://coveralls.io/repos/github/picolino/isdayoff/badge.svg)](https://coveralls.io/github/picolino/isdayoff)
 [![Nuget](https://img.shields.io/nuget/v/isdayoff)](https://www.nuget.org/packages/isdayoff/)
+[![NugetDownloads](https://img.shields.io/nuget/dt/isdayoff?color=blue)](https://www.nuget.org/packages/isdayoff/)
 [![GitHub](https://img.shields.io/github/license/picolino/isdayoff?color=blue)](https://github.com/picolino/isdayoff/blob/master/license)
 
 IsDayOff is a .NET library for API isdayoff service (https://isdayoff.ru/)
@@ -101,7 +102,7 @@ Here a full list of isdayoff resources that is not implemented in library and an
 | `/api/isleap?year=YYYY` | `DateTime.IsLeapYear(YYYY)`                               |
 
 ## Support
-<a href="https://www.buymeacoffee.com/picolino" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"  alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+<a href="https://www.buymeacoffee.com/picolino" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"  alt="Buy Me A Coffee" style="height: 60px !important;width: auto !important;" ></a>
 
 ## License
 
