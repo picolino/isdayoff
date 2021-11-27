@@ -16,7 +16,7 @@
         <RepositoryType>git</RepositoryType>
         <PackageIcon>isdayoff.png</PackageIcon>
         <PackageIconUrl>https://raw.githubusercontent.com/picolino/isdayoff/master/isdayoff/isdayoff.png</PackageIconUrl>
-        <PackageReleaseNotes>- Add Litva support</PackageReleaseNotes>
+        <PackageReleaseNotes>- Add Latvia support</PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
