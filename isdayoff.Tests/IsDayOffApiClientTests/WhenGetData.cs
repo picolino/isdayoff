@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -23,18 +22,39 @@ namespace isdayoff.Tests.IsDayOffApiClientTests
         {
             HttpMessageHandlerMock.ResponseMessage = new HttpResponseMessage{Content = new StringContent(response)};
             
-            var result = await IsDayOffApiClient.GetDataAsync(04.08.Of(2020), 04.08.Of(2020), Country.Russia, CancellationToken.None);
+            var result = await IsDayOffApiClient.GetDataAsync(
+                             04.08.Of(2020), 
+                             04.08.Of(2020), 
+                             Country.Russia, 
+                             false,
+                             false,
+                             false,
+                             CancellationToken.None);
 
             Assert.That(result.Result, Is.EqualTo(response));
         }
         
         [Test]
         [TestCaseSource(nameof(UrlConstructionTestData))]
-        public async Task<string> UrlConstructsCorrectly(DateTime from, DateTime to, Country country, string fakeResponse)
+        public async Task<string> UrlConstructsCorrectly(
+            DateTime from, 
+            DateTime to, 
+            Country country, 
+            bool useShortDays,
+            bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+            bool useSixDaysWorkWeek, 
+            string fakeResponse)
         {
             HttpMessageHandlerMock.ResponseMessage = new HttpResponseMessage{Content = new StringContent(fakeResponse)};
             
-            await IsDayOffApiClient.GetDataAsync(from, to, country, CancellationToken.None);
+            await IsDayOffApiClient.GetDataAsync(
+                from, 
+                to, 
+                country, 
+                useShortDays,
+                treatNonWorkingDaysByCovidAsWorkingDayAdvanced,
+                useSixDaysWorkWeek,
+                CancellationToken.None);
             
             return HttpMessageHandlerMock.LastRequest.RequestUri.ToString();
         }
@@ -44,35 +64,48 @@ namespace isdayoff.Tests.IsDayOffApiClientTests
         {
             HttpMessageHandlerMock.ResponseMessage = new HttpResponseMessage{Content = new StringContent("0")};
             
-            await IsDayOffApiClient.GetDataAsync(04.08.Of(2020), 04.08.Of(2020), Country.Russia, CancellationToken.None);
+            await IsDayOffApiClient.GetDataAsync(
+                04.08.Of(2020), 
+                04.08.Of(2020), 
+                Country.Russia, 
+                false,
+                false,
+                false,
+                CancellationToken.None);
 
             Assert.That(HttpMessageHandlerMock.LastRequest.Headers.UserAgent.ToString(), Is.EqualTo(UserAgentStub));
         }
 
         private static IEnumerable UrlConstructionTestData()
         {
-            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Russia, "0")
-                         {TestName = "One day passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ru"};
-            yield return new TestCaseData(04.08.Of(2020), 05.08.Of(2020), Country.Russia, "00")
-                         {TestName = "Two days passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200805&cc=ru"};
-            yield return new TestCaseData(31.08.Of(2020), 05.09.Of(2020), Country.Russia, "000000")
-                         {TestName = "Multiple days in different months passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200831&date2=20200905&cc=ru"};
-            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Russia, "0")
-                         {TestName = "Russia passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ru"};
-            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Belarus, "0")
-                         {TestName = "Belarus passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=by"};
-            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Kazakhstan, "0")
-                         {TestName = "Kazakhstan passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=kz"};
-            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Ukraine, "0")
-                         {TestName = "Ukraine passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ua"};
-            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.USA, "0")
-                         {TestName = "USA passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=us"};
-            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Uzbekistan, "0")
-                         {TestName = "Uzbekistan passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=uz"};
-            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Turkey, "0")
-                {TestName = "Turkey passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=tr"};
-            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Latvia, "0")
-                {TestName = "Latvia passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=lv"};
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Russia, false, false, false, "0")
+                { TestName = "One day passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ru&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 05.08.Of(2020), Country.Russia, false, false, false, "00")
+                { TestName = "Two days passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200805&cc=ru&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(31.08.Of(2020), 05.09.Of(2020), Country.Russia, false, false, false, "000000")
+                { TestName = "Multiple days in different months passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200831&date2=20200905&cc=ru&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Russia, true, false, false, "0")
+                { TestName = "Short days setting passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ru&pre=1&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Russia, false, true, false, "0")
+                { TestName = "Covid setting passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ru&pre=0&covid=1&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Russia, false, false, true, "0")
+                { TestName = "Six days setting passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ru&pre=0&covid=0&sd=1" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Russia, false, false, false, "000000")
+                { TestName = "Russia passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ru&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Belarus, false, false, false, "0")
+                { TestName = "Belarus passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=by&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Kazakhstan, false, false, false, "0")
+                { TestName = "Kazakhstan passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=kz&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Ukraine, false, false, false, "0")
+                { TestName = "Ukraine passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ua&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.USA, false, false, false, "0")
+                { TestName = "USA passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=us&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Uzbekistan, false, false, false, "0")
+                { TestName = "Uzbekistan passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=uz&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Turkey, false, false, false, "0")
+                { TestName = "Turkey passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=tr&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Latvia, false, false, false, "0")
+                { TestName = "Latvia passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=lv&pre=0&covid=0&sd=0" };
         }
 
         [Test]
@@ -80,7 +113,14 @@ namespace isdayoff.Tests.IsDayOffApiClientTests
         {
             async Task Act()
             {
-                await IsDayOffApiClient.GetDataAsync(04.08.Of(2020), 04.08.Of(2020), (Country) int.MaxValue, CancellationToken.None);
+                await IsDayOffApiClient.GetDataAsync(
+                    04.08.Of(2020), 
+                    04.08.Of(2020),
+                    (Country) int.MaxValue, 
+                    false,
+                    false,
+                    false,
+                    CancellationToken.None);
             }
 
             Assert.ThrowsAsync<ArgumentOutOfRangeException>(Act);
@@ -95,7 +135,14 @@ namespace isdayoff.Tests.IsDayOffApiClientTests
 
             async Task Act()
             {
-                await IsDayOffApiClient.GetDataAsync(04.08.Of(2020), 06.08.Of(2020), Country.Russia, CancellationToken.None);
+                await IsDayOffApiClient.GetDataAsync(
+                    04.08.Of(2020), 
+                    06.08.Of(2020),
+                    Country.Russia, 
+                    false,
+                    false,
+                    false,
+                    CancellationToken.None);
             }
 
             var outerException = Assert.ThrowsAsync<IsDayOffExternalServiceException>(Act);
@@ -126,7 +173,7 @@ namespace isdayoff.Tests.IsDayOffApiClientTests
                          };
             yield return new TestCaseData("4", HttpStatusCode.OK)
                          {
-                             TestName = "IfResponseCodeIsOkButResultLenghtDoesNotMatchRequestedDaysThenDaysCountMismatchExceptionThrows",
+                             TestName = "IfResponseCodeIsOkButResultLengthDoesNotMatchRequestedDaysThenDaysCountMismatchExceptionThrows",
                              ExpectedResult = typeof(DaysCountMismatchException)
                          };
         }

@@ -21,23 +21,26 @@ namespace isdayoff.Core
             this.cache = cache;
         }
 
-        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(DateTime from, DateTime to, Country country, CancellationToken cancellationToken)
+        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(
+            IsDayOffGetDatesRangeArgs args, 
+            CancellationToken cancellationToken)
         {
-            if (from > to)
-            {
-                var temp = to;
-                to = from;
-                from = temp;
-            }
-
-            var result = await cache.GetCachedDatesRangeOrDefault(from, to, country);
+            var result = await cache.GetCachedDatesRangeOrDefault(args.From, args.To, args.Country);
             
             if (result is null)
             {
-                var response = await apiClient.GetDataAsync(from, to, country, cancellationToken);
-                result = GenerateDayOffDateTimeList(response.Result, from.ByDaysTill(to).ToList());
+                var response = await apiClient.GetDataAsync(
+                                   args.From, 
+                                   args.To, 
+                                   args.Country, 
+                                   args.UseShortDays,
+                                   args.TreatNonWorkingDaysByCovidAsWorkingDayAdvanced,
+                                   args.UseSixDaysWorkWeek,
+                                   cancellationToken);
+                
+                result = GenerateDayOffDateTimeList(response.Result, args.From.ByDaysTill(args.To).ToList());
 
-                await cache.SaveDateRangeInCache(from, to, country, result);
+                await cache.SaveDateRangeInCache(args.From, args.To, args.Country, result);
             }
             
             return result;

@@ -28,18 +28,45 @@ namespace isdayoff.Core
             this.httpClientFactory = httpClientFactory;
         }
 
-        public async Task<GetDataApiResponse> GetDataAsync(DateTime from, DateTime to, Country country, CancellationToken cancellationToken)
+        public async Task<GetDataApiResponse> GetDataAsync(
+            DateTime from, 
+            DateTime to, 
+            Country country,
+            bool useShortDays,
+            bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+            bool useSixDaysWorkWeek, 
+            CancellationToken cancellationToken)
         {
-            return await GetDataInternalAsync(from, to, country, cancellationToken);
+            return await GetDataInternalAsync(
+                       from, 
+                       to, 
+                       country, 
+                       useShortDays, 
+                       treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+                       useSixDaysWorkWeek, 
+                       cancellationToken);
         }
         
-        private async Task<GetDataApiResponse> GetDataInternalAsync(DateTime from, DateTime to, Country country, CancellationToken cancellationToken)
+        private async Task<GetDataApiResponse> GetDataInternalAsync(
+            DateTime from, 
+            DateTime to, 
+            Country country,
+            bool useShortDays,
+            bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+            bool useSixDaysWorkWeek, 
+            CancellationToken cancellationToken)
         {
             using (var httpClient = httpClientFactory.CreateHttpClient())
             {
                 var countryCode = GetCountryCode(country);
                 
-                var requestUrl = BuildGetDataRequestUrl(from, to, countryCode);
+                var requestUrl = BuildGetDataRequestUrl(
+                    from, 
+                    to, 
+                    countryCode, 
+                    useShortDays, 
+                    treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+                    useSixDaysWorkWeek);
 
                 try
                 {
@@ -68,7 +95,13 @@ namespace isdayoff.Core
             }
         }
 
-        private string BuildGetDataRequestUrl(DateTime from, DateTime to, string countryCode)
+        private string BuildGetDataRequestUrl(
+            DateTime from, 
+            DateTime to, 
+            string countryCode,
+            bool useShortDays,
+            bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+            bool useSixDaysWorkWeek)
         {
             var stringBuilder = new StringBuilder();
 
@@ -80,6 +113,12 @@ namespace isdayoff.Core
             stringBuilder.AppendFormat("{0:yyyyMMdd}", to);
             stringBuilder.Append("&cc=");
             stringBuilder.Append(countryCode);
+            stringBuilder.Append("&pre=");
+            stringBuilder.Append(useShortDays ? 1 : 0);
+            stringBuilder.Append("&covid=");
+            stringBuilder.Append(treatNonWorkingDaysByCovidAsWorkingDayAdvanced ? 1 : 0);
+            stringBuilder.Append("&sd=");
+            stringBuilder.Append(useSixDaysWorkWeek ? 1 : 0);
 
             return stringBuilder.ToString();
         }

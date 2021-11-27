@@ -38,10 +38,13 @@ namespace isdayoff
         /// </summary>
         /// <param name="settings">Settings</param>
         /// <exception cref="ArgumentNullException">Thrown when some not null property is set to null</exception>
-        public IsDayOff(IsDayOffSettings settings) : this(settings,
-                                                          new IsDayOffApiClient(settings.ApiBaseUrl,
-                                                                                settings.UserAgent,
-                                                                                new HttpClientFactory(new HttpClientHandler())))
+        public IsDayOff(IsDayOffSettings settings)
+            : this(
+                settings,
+                new IsDayOffApiClient(
+                    settings.ApiBaseUrl,
+                    settings.UserAgent,
+                    new HttpClientFactory(new HttpClientHandler())))
         {
         }
 
@@ -65,7 +68,9 @@ namespace isdayoff
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
         public async Task<List<DayOffDateTime>> CheckYearAsync(int year)
         {
-            return await CheckYearAsync(year, CancellationToken.None);
+            return await CheckYearAsync(
+                       year, 
+                       CancellationToken.None);
         }
 
         /// <summary>
@@ -75,9 +80,14 @@ namespace isdayoff
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>List of dates with day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckYearAsync(int year, CancellationToken cancellationToken)
+        public async Task<List<DayOffDateTime>> CheckYearAsync(
+            int year, 
+            CancellationToken cancellationToken)
         {
-            return await CheckYearAsync(year, settings.DefaultCountry, cancellationToken);
+            return await CheckYearAsync(
+                       year, 
+                       settings.DefaultCountry, 
+                       cancellationToken);
         }
 
         /// <summary>
@@ -87,9 +97,14 @@ namespace isdayoff
         /// <param name="country">Country to get dates with day off information for</param>
         /// <returns>List of dates with day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckYearAsync(int year, Country country)
+        public async Task<List<DayOffDateTime>> CheckYearAsync(
+            int year, 
+            Country country)
         {
-            return await CheckYearAsync(year, country, CancellationToken.None);
+            return await CheckYearAsync(
+                       year, 
+                       country, 
+                       CancellationToken.None);
         }
 
         /// <summary>
@@ -100,11 +115,18 @@ namespace isdayoff
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>List of dates with day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckYearAsync(int year, Country country, CancellationToken cancellationToken)
+        public async Task<List<DayOffDateTime>> CheckYearAsync(
+            int year, 
+            Country country, 
+            CancellationToken cancellationToken)
         {
             var yearDateTime = new DateTime(year, 1, 1);
             
-            return await CheckDatesRangeAsync(yearDateTime, yearDateTime.EndOfYear(), country, cancellationToken);
+            return await CheckDatesRangeAsync(
+                       yearDateTime, 
+                       yearDateTime.EndOfYear(), 
+                       country, 
+                       cancellationToken);
         }
         
         /// <summary>
@@ -114,9 +136,14 @@ namespace isdayoff
         /// <param name="month">Month to get dates with day off information</param>
         /// <returns>List of dates with day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckMonthAsync(int year, int month)
+        public async Task<List<DayOffDateTime>> CheckMonthAsync(
+            int year, 
+            int month)
         {
-            return await CheckMonthAsync(year, month, CancellationToken.None);
+            return await CheckMonthAsync(
+                       year, 
+                       month, 
+                       CancellationToken.None);
         }
 
         /// <summary>
@@ -127,9 +154,16 @@ namespace isdayoff
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>List of dates with day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckMonthAsync(int year, int month, CancellationToken cancellationToken)
+        public async Task<List<DayOffDateTime>> CheckMonthAsync(
+            int year, 
+            int month, 
+            CancellationToken cancellationToken)
         {
-            return await CheckMonthAsync(year, month, settings.DefaultCountry, cancellationToken);
+            return await CheckMonthAsync(
+                       year, 
+                       month, 
+                       settings.DefaultCountry, 
+                       cancellationToken);
         }
 
         /// <summary>
@@ -140,9 +174,16 @@ namespace isdayoff
         /// <param name="country">Country to get dates with day off information for</param>
         /// <returns>List of dates with day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckMonthAsync(int year, int month, Country country)
+        public async Task<List<DayOffDateTime>> CheckMonthAsync(
+            int year, 
+            int month, 
+            Country country)
         {
-            return await CheckMonthAsync(year, month, country, CancellationToken.None);
+            return await CheckMonthAsync(
+                       year, 
+                       month, 
+                       country, 
+                       CancellationToken.None);
         }
 
         /// <summary>
@@ -154,11 +195,19 @@ namespace isdayoff
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>List of dates with day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckMonthAsync(int year, int month, Country country, CancellationToken cancellationToken)
+        public async Task<List<DayOffDateTime>> CheckMonthAsync(
+            int year, 
+            int month, 
+            Country country, 
+            CancellationToken cancellationToken)
         {
             var monthDateTime = new DateTime(year, month, 1);
             
-            return await CheckDatesRangeAsync(monthDateTime, monthDateTime.EndOfMonth(), country, cancellationToken);
+            return await CheckDatesRangeAsync(
+                       monthDateTime, 
+                       monthDateTime.EndOfMonth(), 
+                       country, 
+                       cancellationToken);
         }
         
         /// <summary>
@@ -169,9 +218,16 @@ namespace isdayoff
         /// <param name="day">Day to get day off information</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<DayType> CheckDayAsync(int year, int month, int day)
+        public async Task<DayType> CheckDayAsync(
+            int year, 
+            int month, 
+            int day)
         {
-            return await CheckDayAsync(year, month, day, CancellationToken.None);
+            return await CheckDayAsync(
+                       year, 
+                       month, 
+                       day, 
+                       CancellationToken.None);
         }
 
         /// <summary>
@@ -183,9 +239,18 @@ namespace isdayoff
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<DayType> CheckDayAsync(int year, int month, int day, CancellationToken cancellationToken)
+        public async Task<DayType> CheckDayAsync(
+            int year, 
+            int month, 
+            int day, 
+            CancellationToken cancellationToken)
         {
-            return await CheckDayAsync(year, month, day, settings.DefaultCountry, cancellationToken);
+            return await CheckDayAsync(
+                       year, 
+                       month, 
+                       day, 
+                       settings.DefaultCountry, 
+                       cancellationToken);
         }
         
         /// <summary>
@@ -206,9 +271,14 @@ namespace isdayoff
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<DayType> CheckDayAsync(DateTime day, CancellationToken cancellationToken)
+        public async Task<DayType> CheckDayAsync(
+            DateTime day, 
+            CancellationToken cancellationToken)
         {
-            return await CheckDayAsync(day, settings.DefaultCountry, cancellationToken);
+            return await CheckDayAsync(
+                       day, 
+                       settings.DefaultCountry, 
+                       cancellationToken);
         }
         
         /// <summary>
@@ -218,9 +288,14 @@ namespace isdayoff
         /// <param name="country">Country to get day off information for</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<DayType> CheckDayAsync(DateTime day, Country country)
+        public async Task<DayType> CheckDayAsync(
+            DateTime day, 
+            Country country)
         {
-            return await CheckDayAsync(day, country, CancellationToken.None);
+            return await CheckDayAsync(
+                       day, 
+                       country, 
+                       CancellationToken.None);
         }
 
         /// <summary>
@@ -231,9 +306,17 @@ namespace isdayoff
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<DayType> CheckDayAsync(DateTime day, Country country, CancellationToken cancellationToken)
+        public async Task<DayType> CheckDayAsync(
+            DateTime day, 
+            Country country, 
+            CancellationToken cancellationToken)
         {
-            return await CheckDayAsync(day.Year, day.Month, day.Day, country, cancellationToken);
+            return await CheckDayAsync(
+                       day.Year, 
+                       day.Month, 
+                       day.Day, 
+                       country, 
+                       cancellationToken);
         }
 
         /// <summary>
@@ -245,9 +328,18 @@ namespace isdayoff
         /// <param name="country">Country to get day off information for</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<DayType> CheckDayAsync(int year, int month, int day, Country country)
+        public async Task<DayType> CheckDayAsync(
+            int year, 
+            int month, 
+            int day, 
+            Country country)
         {
-            return await CheckDayAsync(year, month, day, country, CancellationToken.None);
+            return await CheckDayAsync(
+                       year, 
+                       month, 
+                       day, 
+                       country, 
+                       CancellationToken.None);
         }
 
         /// <summary>
@@ -260,11 +352,20 @@ namespace isdayoff
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<DayType> CheckDayAsync(int year, int month, int day, Country country, CancellationToken cancellationToken)
+        public async Task<DayType> CheckDayAsync(
+            int year, 
+            int month, 
+            int day, 
+            Country country, 
+            CancellationToken cancellationToken)
         {
             var dayDateTime = new DateTime(year, month, day);
             
-            var result = await CheckDatesRangeAsync(dayDateTime, dayDateTime, country, cancellationToken);
+            var result = await CheckDatesRangeAsync(
+                             dayDateTime, 
+                             dayDateTime, 
+                             country, 
+                             cancellationToken);
             return result.Single().DayType;
         }
 
@@ -275,9 +376,14 @@ namespace isdayoff
         /// <param name="to">Date to (inclusive)</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(DateTime from, DateTime to)
+        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(
+            DateTime from, 
+            DateTime to)
         {
-            return await CheckDatesRangeAsync(from, to, CancellationToken.None);
+            return await CheckDatesRangeAsync(
+                       from, 
+                       to, 
+                       CancellationToken.None);
         }
 
         /// <summary>
@@ -288,9 +394,16 @@ namespace isdayoff
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(DateTime from, DateTime to, CancellationToken cancellationToken)
+        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(
+            DateTime from, 
+            DateTime to, 
+            CancellationToken cancellationToken)
         {
-            return await CheckDatesRangeAsync(from, to, settings.DefaultCountry, cancellationToken);
+            return await CheckDatesRangeAsync(
+                       from, 
+                       to, 
+                       settings.DefaultCountry, 
+                       cancellationToken);
         }
         
         /// <summary>
@@ -301,9 +414,16 @@ namespace isdayoff
         /// <param name="country">Country to get day off information for</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(DateTime from, DateTime to, Country country)
+        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(
+            DateTime from, 
+            DateTime to, 
+            Country country)
         {
-            return await CheckDatesRangeAsync(from, to, country, CancellationToken.None);
+            return await CheckDatesRangeAsync(
+                       from, 
+                       to, 
+                       country,
+                       CancellationToken.None);
         }
 
         /// <summary>
@@ -315,9 +435,77 @@ namespace isdayoff
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>Day off information</returns>
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
-        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(DateTime from, DateTime to, Country country, CancellationToken cancellationToken)
+        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(
+            DateTime from, 
+            DateTime to, 
+            Country country,
+            CancellationToken cancellationToken)
         {
-            return await service.CheckDatesRangeAsync(from, to, country, cancellationToken);
+            return await CheckDatesRangeAsync(
+                       from, 
+                       to, 
+                       country, 
+                       settings.UseShortDays,
+                       settings.TreatNonWorkingDaysByCovidAsWorkingDayAdvanced,
+                       settings.UseSixDaysWorkWeek,
+                       cancellationToken);
+        }
+
+        /// <summary>
+        /// Get day off information for dates range
+        /// </summary>
+        /// <param name="from">Date from (inclusive)</param>
+        /// <param name="to">Date to (inclusive)</param>
+        /// <param name="country">Country to get day off information for</param>
+        /// <param name="useSixDaysWorkWeek">Use six days work week</param>
+        /// <param name="useShortDays">Use short days</param>
+        /// <param name="treatNonWorkingDaysByCovidAsWorkingDayAdvanced">Use working days advanced</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Day off information</returns>
+        /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
+        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(
+            DateTime from, 
+            DateTime to, 
+            Country country,
+            bool useShortDays,
+            bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+            bool useSixDaysWorkWeek, 
+            CancellationToken cancellationToken)
+        {
+            return await CheckAsync(
+                       new IsDayOffGetDatesRangeArgs(
+                           from,
+                           to,
+                           country,
+                           useShortDays,
+                           treatNonWorkingDaysByCovidAsWorkingDayAdvanced,
+                           useSixDaysWorkWeek),
+                       cancellationToken);
+        }
+
+        /// <summary>
+        /// Get day off information by parameters
+        /// </summary>
+        /// <param name="args">Parameters to get day off information for</param>
+        /// <returns>Day off information</returns>
+        /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
+        public async Task<List<DayOffDateTime>> CheckAsync(IsDayOffGetDatesRangeArgs args)
+        {
+            return await CheckAsync(args, CancellationToken.None);
+        }
+        
+        /// <summary>
+        /// Get day off information by parameters
+        /// </summary>
+        /// <param name="args">Parameters to get day off information for</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Day off information</returns>
+        /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
+        public async Task<List<DayOffDateTime>> CheckAsync(
+            IsDayOffGetDatesRangeArgs args,
+            CancellationToken cancellationToken)
+        {
+            return await service.CheckDatesRangeAsync(args, cancellationToken);
         }
     }
 }

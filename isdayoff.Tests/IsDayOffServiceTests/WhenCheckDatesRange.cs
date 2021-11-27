@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using isdayoff.Contract;
+using isdayoff.Core;
 using isdayoff.Tests._Extensions;
 using NUnit.Framework;
 
@@ -14,8 +15,16 @@ namespace isdayoff.Tests.IsDayOffServiceTests
         public async Task IfCachedValueExistsThenCachedValueReturns()
         {
             CacheStub.CachedValue.Add(new DayOffDateTime(01.01.Of(2020), DayType.NotWorkingDay));
-            
-            var result = await IsDayOffService.CheckDatesRangeAsync(01.01.Of(2020), 01.01.Of(2020), Country.Russia, CancellationToken.None);
+
+            var result = await IsDayOffService.CheckDatesRangeAsync(
+                             new IsDayOffGetDatesRangeArgs(
+                                 01.01.Of(2020),
+                                 01.01.Of(2020),
+                                 Country.Russia,
+                                 false,
+                                 false,
+                                 false),
+                             CancellationToken.None);
 
             Assert.That(result.Single().DayType, Is.EqualTo(DayType.NotWorkingDay));
         }
@@ -25,7 +34,14 @@ namespace isdayoff.Tests.IsDayOffServiceTests
         {
             ApiClientStub.Response = "1";
             
-            var result = await IsDayOffService.CheckDatesRangeAsync(04.08.Of(2020), 04.08.Of(2020), Country.Russia, CancellationToken.None);
+            var result = await IsDayOffService.CheckDatesRangeAsync(
+                             new IsDayOffGetDatesRangeArgs(04.08.Of(2020), 
+                             04.08.Of(2020), 
+                             Country.Russia,
+                             false,
+                             false,
+                             false), 
+                             CancellationToken.None);
 
             Assert.That(result.Single().DayType, Is.EqualTo(DayType.NotWorkingDay));
         }
@@ -38,8 +54,16 @@ namespace isdayoff.Tests.IsDayOffServiceTests
         public async Task ApiResponseMapsToDayTypeCorrectly(int apiResponse, DayType expectedDateType)
         {
             ApiClientStub.Response = apiResponse.ToString();
-            
-            var result = await IsDayOffService.CheckDatesRangeAsync(04.08.Of(2020), 04.08.Of(2020), Country.Russia, CancellationToken.None);
+
+            var result = await IsDayOffService.CheckDatesRangeAsync(
+                             new IsDayOffGetDatesRangeArgs(
+                                 04.08.Of(2020),
+                                 04.08.Of(2020),
+                                 Country.Russia,
+                                 false,
+                                 false,
+                                 false),
+                             CancellationToken.None);
 
             Assert.That(result.Single().DayType, Is.EqualTo(expectedDateType));
         }
@@ -53,7 +77,15 @@ namespace isdayoff.Tests.IsDayOffServiceTests
 
             async Task Act()
             {
-                await IsDayOffService.CheckDatesRangeAsync(initialDate, endDate, Country.Russia, CancellationToken.None);
+                await IsDayOffService.CheckDatesRangeAsync(
+                    new IsDayOffGetDatesRangeArgs(
+                        initialDate,
+                        endDate,
+                        Country.Russia,
+                        false,
+                        false,
+                        false),
+                    CancellationToken.None);
             } 
             
             Assert.ThrowsAsync<ArgumentOutOfRangeException>(Act);
@@ -62,7 +94,15 @@ namespace isdayoff.Tests.IsDayOffServiceTests
         [Test]
         public async Task ApiResponseReturnsSameDateTimeAsProvided()
         {
-            var result = await IsDayOffService.CheckDatesRangeAsync(04.08.Of(2020), 04.08.Of(2020), Country.Russia, CancellationToken.None);
+            var result = await IsDayOffService.CheckDatesRangeAsync(
+                             new IsDayOffGetDatesRangeArgs(
+                                 04.08.Of(2020),
+                                 04.08.Of(2020),
+                                 Country.Russia,
+                                 false,
+                                 false,
+                                 false),
+                             CancellationToken.None);
 
             Assert.That(result.Single().DateTime, Is.EqualTo(04.08.Of(2020)));
         }
@@ -73,8 +113,15 @@ namespace isdayoff.Tests.IsDayOffServiceTests
             ApiClientStub.Response = "00";
             var from = 06.08.Of(2020);
             var to = 05.08.Of(2020);
-            
-            var result = await IsDayOffService.CheckDatesRangeAsync(from, to, Country.Russia, CancellationToken.None);
+
+            var result = await IsDayOffService.CheckDatesRangeAsync(
+                             new IsDayOffGetDatesRangeArgs(from,
+                                 to,
+                                 Country.Russia,
+                                 false,
+                                 false,
+                                 false),
+                             CancellationToken.None);
 
             Assert.That(result[0].DateTime == to);
             Assert.That(result[1].DateTime == from);

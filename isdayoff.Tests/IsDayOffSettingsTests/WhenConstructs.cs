@@ -9,7 +9,15 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
         [Test]
         public void CacheInstanceSaves()
         {
-           var instance = new IsDayOffSettings(ApiBaseUrlStub, UserAgentStub, CacheStub, Country.Russia, SourceLevels.Off);
+            var instance = new IsDayOffSettings(
+                ApiBaseUrlStub,
+                UserAgentStub,
+                CacheStub,
+                Country.Russia,
+                false,
+                false,
+                false,
+                SourceLevels.Off);
            
            Assert.That(instance.Cache, Is.EqualTo(CacheStub));
         }
@@ -17,7 +25,15 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
         [Test]
         public void DefaultCountrySaves()
         {
-            var instance = new IsDayOffSettings(ApiBaseUrlStub, UserAgentStub, CacheStub, Country.Russia, SourceLevels.Off);
+            var instance = new IsDayOffSettings(
+                ApiBaseUrlStub,
+                UserAgentStub,
+                CacheStub,
+                Country.Russia,
+                false,
+                false,
+                false,
+                SourceLevels.Off);
            
             Assert.That(instance.DefaultCountry, Is.EqualTo(Country.Russia));
         }
@@ -25,7 +41,15 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
         [Test]
         public void ApiBaseUrlSaves()
         {
-            var instance = new IsDayOffSettings(ApiBaseUrlStub, UserAgentStub, CacheStub, Country.Russia, SourceLevels.Off);
+            var instance = new IsDayOffSettings(
+                ApiBaseUrlStub,
+                UserAgentStub,
+                CacheStub,
+                Country.Russia,
+                false,
+                false,
+                false,
+                SourceLevels.Off);
            
             Assert.That(instance.ApiBaseUrl, Is.EqualTo(ApiBaseUrlStub));
         }
@@ -33,7 +57,15 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
         [Test]
         public void UserAgentSaves()
         {
-            var instance = new IsDayOffSettings(ApiBaseUrlStub, UserAgentStub, CacheStub, Country.Russia, SourceLevels.Off);
+            var instance = new IsDayOffSettings(
+                ApiBaseUrlStub,
+                UserAgentStub,
+                CacheStub,
+                Country.Russia,
+                false,
+                false,
+                false,
+                SourceLevels.Off);
            
             Assert.That(instance.UserAgent, Is.EqualTo(UserAgentStub));
         }
@@ -41,7 +73,15 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
         [Test]
         public void TraceLevelSaves()
         {
-            var instance = new IsDayOffSettings(ApiBaseUrlStub, UserAgentStub, CacheStub, Country.Russia, SourceLevels.Information);
+            var instance = new IsDayOffSettings(
+                ApiBaseUrlStub,
+                UserAgentStub,
+                CacheStub,
+                Country.Russia,
+                false,
+                false,
+                false,
+                SourceLevels.Information);
            
             Assert.That(instance.TraceLevel, Is.EqualTo(SourceLevels.Information));
         }

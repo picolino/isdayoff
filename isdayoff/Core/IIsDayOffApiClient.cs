@@ -8,6 +8,13 @@ namespace isdayoff.Core
 {
     internal interface IIsDayOffApiClient
     {
-        Task<GetDataApiResponse> GetDataAsync(DateTime from, DateTime to, Country country, CancellationToken cancellationToken);
+        Task<GetDataApiResponse> GetDataAsync(
+            DateTime from, 
+            DateTime to, 
+            Country country, 
+            bool useShortDays,
+            bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+            bool useSixDaysWorkWeek, 
+            CancellationToken cancellationToken);
     }
 }

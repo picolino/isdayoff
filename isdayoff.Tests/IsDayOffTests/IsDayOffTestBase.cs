@@ -11,7 +11,15 @@ namespace isdayoff.Tests.IsDayOffTests
         {
             base.Setup();
 
-            var settings = new IsDayOffSettings(ApiBaseUrlStub, UserAgentStub, CacheStub, Country.Russia, SourceLevels.Off);
+            var settings = new IsDayOffSettings(
+                ApiBaseUrlStub,
+                UserAgentStub,
+                CacheStub,
+                Country.Russia,
+                false,
+                false,
+                false,
+                SourceLevels.Off);
             IsDayOff = new IsDayOff(settings, ApiClientStub);
         }
     }

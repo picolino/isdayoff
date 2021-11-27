@@ -11,7 +11,14 @@ namespace isdayoff.Tests._Fakes
     {
         public string Response { get; set; } = "0";
 
-        public Task<GetDataApiResponse> GetDataAsync(DateTime from, DateTime to, Country country, CancellationToken cancellationToken)
+        public Task<GetDataApiResponse> GetDataAsync(
+            DateTime from,
+            DateTime to,
+            Country country,
+            bool useShortDays, 
+            bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+            bool useSixDaysWorkWeek,
+            CancellationToken cancellationToken)
         {
             return Task.FromResult(new GetDataApiResponse(Response));
         }

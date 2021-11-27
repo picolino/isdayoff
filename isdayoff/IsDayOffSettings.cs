@@ -22,18 +22,27 @@ namespace isdayoff
         internal IsDayOffSettings(string apiBaseUrl, 
                                   string userAgent, 
                                   IIsDayOffCache cache, 
-                                  Country defaultCountry, 
+                                  Country defaultCountry,
+                                  bool useShortDays,
+                                  bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+                                  bool useSixDaysWorkWeek,  
                                   SourceLevels? traceLevel)
         {
             ApiBaseUrl = apiBaseUrl;
             UserAgent = userAgent;
             Cache = cache;
             DefaultCountry = defaultCountry;
+            UseShortDays = useShortDays;
+            TreatNonWorkingDaysByCovidAsWorkingDayAdvanced = treatNonWorkingDaysByCovidAsWorkingDayAdvanced;
+            UseSixDaysWorkWeek = useSixDaysWorkWeek;
             TraceLevel = traceLevel;
         }
         
         internal IIsDayOffCache Cache { get; }
         internal Country DefaultCountry { get; }
+        internal bool UseShortDays { get; }
+        internal bool TreatNonWorkingDaysByCovidAsWorkingDayAdvanced { get; }
+        internal bool UseSixDaysWorkWeek { get; }
         internal string ApiBaseUrl { get; } 
         internal string UserAgent { get; } 
         internal SourceLevels? TraceLevel { get; }

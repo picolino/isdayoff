@@ -10,8 +10,16 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
         public override void Setup()
         {
             base.Setup();
-            
-            IsDayOffSettings = new IsDayOffSettings(ApiBaseUrlStub, UserAgentStub, CacheStub, Country.Russia, SourceLevels.Off);
+
+            IsDayOffSettings = new IsDayOffSettings(
+                ApiBaseUrlStub,
+                UserAgentStub,
+                CacheStub,
+                Country.Russia,
+                false,
+                false,
+                false,
+                SourceLevels.Off);
         }
     }
 }
