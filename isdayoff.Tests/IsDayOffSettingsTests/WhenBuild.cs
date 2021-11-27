@@ -40,6 +40,30 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
 
             Assert.That(builder.Cache, Is.TypeOf<IsDayOffInMemoryCache>());
         }
+        
+        [Test]
+        public void UseSixDaysWorkWeekThenSixDaysWorkWeekEnabled()
+        {
+            var builder = IsDayOffSettings.Build.UseSixDaysWorkWeek().Create();
+
+            Assert.That(builder.UseSixDaysWorkWeek, Is.True);
+        }
+        
+        [Test]
+        public void UseShortDaysThenShortDaysEnabled()
+        {
+            var builder = IsDayOffSettings.Build.UseShortDays().Create();
+
+            Assert.That(builder.UseShortDays, Is.True);
+        }
+        
+        [Test]
+        public void TreatNonWorkingDaysByCovidAsWorkingDayAdvancedPassed()
+        {
+            var builder = IsDayOffSettings.Build.TreatNonWorkingDaysByCovidAsWorkingDayAdvanced().Create();
+
+            Assert.That(builder.TreatNonWorkingDaysByCovidAsWorkingDayAdvanced, Is.True);
+        }
 
         [Test]
         public void CustomCacheCanNotBeNull()
