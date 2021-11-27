@@ -124,6 +124,8 @@ namespace isdayoff.Core
                     return "uz";
                 case Country.Turkey:
                     return "tr";
+                case Country.Latvia:
+                    return "lv";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(country), country, ErrorsMessages.UnknownCountry());
             }

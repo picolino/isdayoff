@@ -8,6 +8,7 @@
         Kazakhstan,
         USA,
         Uzbekistan,
-        Turkey
+        Turkey,
+        Latvia
     }
 }
