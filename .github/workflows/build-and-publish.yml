@@ -8,7 +8,7 @@ on:
 env:
   APP_NAME: isdayoff                                        # set this to your application's name
   APP_PACKAGE_PATH: './published'                           # set this to the path to your app project, defaults to the repository root
-  NETCORE_VERSION: '6.0.5'                                # set this to the .NET Core version to use
+  NETCORE_VERSION: '6.0.300'                                # set this to the .NET Core version to use
   GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}   # set this to access token to github.com
   GITHUB_API_KEY: ${{ github.token }}                         # set this to access token to github.com
   NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}               # set this to access token to nuget.org
