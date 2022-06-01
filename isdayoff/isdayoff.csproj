@@ -2,23 +2,22 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <AssemblyVersion>1.4</AssemblyVersion>
-        <PackageVersion>1.4</PackageVersion>
+        <AssemblyVersion>1.5</AssemblyVersion>
+        <PackageVersion>1.5</PackageVersion>
         <Title>isdayoff</Title>
         <Authors>Danila Chervonny (contact@picolino.dev)</Authors>
         <Description>IsDayOff is a .NET library for API isdayoff service (https://isdayoff.ru/)</Description>
-        <Copyright>Danila Chervonny, Copyright © 2021 MIT</Copyright>
+        <Copyright>Danila Chervonny, Copyright © 2022 MIT</Copyright>
         <PackageTags>IsDayOff, Date, Time, DateTime, Daily, IsWorkday, Holidays</PackageTags>
-        <FileVersion>1.4</FileVersion>
+        <FileVersion>1.5</FileVersion>
         <PackageProjectUrl>https://isdayoff.ru/</PackageProjectUrl>
         <license>MIT</license>
         <RepositoryUrl>https://github.com/picolino/isdayoff</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageIcon>isdayoff.png</PackageIcon>
         <PackageIconUrl>https://raw.githubusercontent.com/picolino/isdayoff/master/isdayoff/isdayoff.png</PackageIconUrl>
-        <PackageReleaseNotes>- Add covid working days support
-- Add six days working week support
-- Add short days support</PackageReleaseNotes>
+        <PackageReleaseNotes>- Improve async performance by using ConfigureAwait(false) construction
+- Retarget tests project to dotnet 6.0</PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
