@@ -16,6 +16,7 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
                 UserAgentStub,
                 CacheStub,
                 Country.Russia,
+                null,
                 false,
                 false,
                 false,

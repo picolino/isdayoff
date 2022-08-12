@@ -23,6 +23,7 @@ namespace isdayoff
                                   string userAgent, 
                                   IIsDayOffCache cache, 
                                   Country defaultCountry,
+                                  Region? defaultRegion,
                                   bool useShortDays,
                                   bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
                                   bool useSixDaysWorkWeek,  
@@ -32,6 +33,7 @@ namespace isdayoff
             UserAgent = userAgent;
             Cache = cache;
             DefaultCountry = defaultCountry;
+            DefaultRegion = defaultRegion;
             UseShortDays = useShortDays;
             TreatNonWorkingDaysByCovidAsWorkingDayAdvanced = treatNonWorkingDaysByCovidAsWorkingDayAdvanced;
             UseSixDaysWorkWeek = useSixDaysWorkWeek;
@@ -40,6 +42,7 @@ namespace isdayoff
         
         internal IIsDayOffCache Cache { get; }
         internal Country DefaultCountry { get; }
+        internal Region? DefaultRegion { get; }
         internal bool UseShortDays { get; }
         internal bool TreatNonWorkingDaysByCovidAsWorkingDayAdvanced { get; }
         internal bool UseSixDaysWorkWeek { get; }

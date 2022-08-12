@@ -26,6 +26,14 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
         }
 
         [Test]
+        public void DefaultRegionIsEqualToDefaultRegionFromBuilder([Values] Region region)
+        {
+            var builder = IsDayOffSettings.Build.UseDefaultRegion(region).Create();
+
+            Assert.That(builder.DefaultRegion, Is.EqualTo(region));
+        }
+
+        [Test]
         public void TraceLevelIsEqualToPassedTraceLevel([Values] SourceLevels traceLevel)
         {
             var builder = IsDayOffSettings.Build.UseLogging(traceLevel).Create();

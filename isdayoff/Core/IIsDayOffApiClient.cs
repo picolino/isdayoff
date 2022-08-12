@@ -12,6 +12,7 @@ namespace isdayoff.Core
             DateTime from, 
             DateTime to, 
             Country country, 
+            Region? region,
             bool useShortDays,
             bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
             bool useSixDaysWorkWeek, 

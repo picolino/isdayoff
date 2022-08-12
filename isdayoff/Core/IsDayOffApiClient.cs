@@ -32,6 +32,7 @@ namespace isdayoff.Core
             DateTime from, 
             DateTime to, 
             Country country,
+            Region? region,
             bool useShortDays,
             bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
             bool useSixDaysWorkWeek, 
@@ -41,6 +42,7 @@ namespace isdayoff.Core
                        from, 
                        to, 
                        country, 
+                       region,
                        useShortDays, 
                        treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
                        useSixDaysWorkWeek, 
@@ -51,6 +53,7 @@ namespace isdayoff.Core
             DateTime from, 
             DateTime to, 
             Country country,
+            Region? region,
             bool useShortDays,
             bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
             bool useSixDaysWorkWeek, 
@@ -59,11 +62,13 @@ namespace isdayoff.Core
             using (var httpClient = httpClientFactory.CreateHttpClient())
             {
                 var countryCode = GetCountryCode(country);
+                var regionCode = GetRegionCode(region);
                 
                 var requestUrl = BuildGetDataRequestUrl(
                     from, 
                     to, 
                     countryCode, 
+                    regionCode,
                     useShortDays, 
                     treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
                     useSixDaysWorkWeek);
@@ -99,6 +104,7 @@ namespace isdayoff.Core
             DateTime from, 
             DateTime to, 
             string countryCode,
+            string regionCode,
             bool useShortDays,
             bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
             bool useSixDaysWorkWeek)
@@ -112,7 +118,7 @@ namespace isdayoff.Core
             stringBuilder.Append("&date2=");
             stringBuilder.AppendFormat("{0:yyyyMMdd}", to);
             stringBuilder.Append("&cc=");
-            stringBuilder.Append(countryCode);
+            stringBuilder.Append(string.IsNullOrWhiteSpace(regionCode) ? countryCode : string.Join("-", countryCode, regionCode));
             stringBuilder.Append("&pre=");
             stringBuilder.Append(useShortDays ? 1 : 0);
             stringBuilder.Append("&covid=");
@@ -167,6 +173,59 @@ namespace isdayoff.Core
                     return "lv";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(country), country, ErrorsMessages.UnknownCountry());
+            }
+        }
+
+        private static string GetRegionCode(Region? region)
+        {
+            switch (region)
+            {
+                case Region.RuAd:
+                    return "ad";
+                case Region.RuAl:
+                    return "al";
+                case Region.RuBa:
+                    return "ba";
+                case Region.RuBu:
+                    return "bu";
+                case Region.RuDa:
+                    return "da";
+                case Region.RuIn:
+                    return "in";
+                case Region.RuKb:
+                    return "kb";
+                case Region.RuKl:
+                    return "kl";
+                case Region.RuKc:
+                    return "kc";
+                case Region.RuKa:
+                    return "ka";
+                case Region.RuSa:
+                    return "sa";
+                case Region.RuSe:
+                    return "se";
+                case Region.RuTa:
+                    return "ta";
+                case Region.RuTy:
+                    return "ty";
+                case Region.RuCe:
+                    return "ce";
+                case Region.RuCu:
+                    return "cu";
+                case Region.RuZab:
+                    return "zab";
+                case Region.RuSta:
+                    return "sta";
+                case Region.RuBel:
+                    return "bel";
+                case Region.RuPnz:
+                    return "pnz";
+                case Region.RuSar:
+                    return "sar";
+                case null:
+                    return string.Empty;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(region), region, ErrorsMessages.UnknownRegion());
             }
         }
     }

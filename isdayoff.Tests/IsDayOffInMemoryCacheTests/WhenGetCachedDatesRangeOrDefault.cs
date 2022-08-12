@@ -25,11 +25,11 @@ namespace isdayoff.Tests.IsDayOffInMemoryCacheTests
         {
             if (cacheHasValue)
             {
-                await IsDayOffInMemoryCache.SaveDateRangeInCache(01.01.Of(2020), 01.01.Of(2020), Country.Russia, 
+                await IsDayOffInMemoryCache.SaveDateRangeInCache(01.01.Of(2020), 01.01.Of(2020), Country.Russia, null,
                                                                  new List<DayOffDateTime> {new DayOffDateTime(01.01.Of(2020), DayType.NotWorkingDay)});
             }
             
-            var result = await IsDayOffInMemoryCache.GetCachedDatesRangeOrDefault(01.01.Of(2020), 01.01.Of(2020), Country.Russia);
+            var result = await IsDayOffInMemoryCache.GetCachedDatesRangeOrDefault(01.01.Of(2020), 01.01.Of(2020), Country.Russia, null);
             
             Assert.That(result, cacheHasValue ? Is.Not.Null : Is.Null);
         }
@@ -42,9 +42,9 @@ namespace isdayoff.Tests.IsDayOffInMemoryCacheTests
             var requestFrom = 10.01.Of(2020);
             var requestTo = 19.01.Of(2020);
             
-            await IsDayOffInMemoryCache.SaveDateRangeInCache(cachedFrom, cachedTo, Country.Russia, GenerateDayOffDateTimesInDateRange(cachedFrom, cachedTo));
+            await IsDayOffInMemoryCache.SaveDateRangeInCache(cachedFrom, cachedTo, Country.Russia, null, GenerateDayOffDateTimesInDateRange(cachedFrom, cachedTo));
             
-            var found = await IsDayOffInMemoryCache.GetCachedDatesRangeOrDefault(requestFrom, requestTo, Country.Russia);
+            var found = await IsDayOffInMemoryCache.GetCachedDatesRangeOrDefault(requestFrom, requestTo, Country.Russia, null);
             
             Assert.That(found.Count, Is.EqualTo(10));
         }
@@ -57,9 +57,9 @@ namespace isdayoff.Tests.IsDayOffInMemoryCacheTests
             var requestFrom = 10.01.Of(2020);
             var requestTo = 19.01.Of(2020);
             
-            await IsDayOffInMemoryCache.SaveDateRangeInCache(cachedFrom, cachedTo, Country.Russia, GenerateDayOffDateTimesInDateRange(cachedFrom, cachedTo));
+            await IsDayOffInMemoryCache.SaveDateRangeInCache(cachedFrom, cachedTo, Country.Russia, null, GenerateDayOffDateTimesInDateRange(cachedFrom, cachedTo));
             
-            var found = await IsDayOffInMemoryCache.GetCachedDatesRangeOrDefault(requestFrom, requestTo, Country.Russia);
+            var found = await IsDayOffInMemoryCache.GetCachedDatesRangeOrDefault(requestFrom, requestTo, Country.Russia, null);
             
             Assert.That(found, Is.Null);
         }

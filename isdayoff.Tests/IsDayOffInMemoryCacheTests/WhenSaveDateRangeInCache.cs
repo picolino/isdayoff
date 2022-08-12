@@ -9,9 +9,9 @@ namespace isdayoff.Tests.IsDayOffInMemoryCacheTests
     internal class WhenSaveDateRangeInCache : IsDayOffInMemoryCacheTestBase
     {
         [Test]
-        public async Task NoExceptionOccurs([Values] Country country)
+        public async Task NoExceptionOccurs([Values] Country country, [Values] Region? region)
         {
-            await IsDayOffInMemoryCache.SaveDateRangeInCache(01.01.Of(2020),  01.01.Of(2020), country, new List<DayOffDateTime>{new DayOffDateTime(01.01.Of(2020), DayType.NotWorkingDay)});
+            await IsDayOffInMemoryCache.SaveDateRangeInCache(01.01.Of(2020),  01.01.Of(2020), country, region, new List<DayOffDateTime>{new DayOffDateTime(01.01.Of(2020), DayType.NotWorkingDay)});
             Assert.Pass();
         }
     }

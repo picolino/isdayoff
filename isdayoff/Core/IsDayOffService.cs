@@ -25,7 +25,7 @@ namespace isdayoff.Core
             IsDayOffGetDatesRangeArgs args, 
             CancellationToken cancellationToken)
         {
-            var result = await cache.GetCachedDatesRangeOrDefault(args.From, args.To, args.Country);
+            var result = await cache.GetCachedDatesRangeOrDefault(args.From, args.To, args.Country, args.Region);
             
             if (result is null)
             {
@@ -33,6 +33,7 @@ namespace isdayoff.Core
                                    args.From, 
                                    args.To, 
                                    args.Country, 
+                                   args.Region,
                                    args.UseShortDays,
                                    args.TreatNonWorkingDaysByCovidAsWorkingDayAdvanced,
                                    args.UseSixDaysWorkWeek,
@@ -40,7 +41,7 @@ namespace isdayoff.Core
                 
                 result = GenerateDayOffDateTimeList(response.Result, args.From.ByDaysTill(args.To).ToList());
 
-                await cache.SaveDateRangeInCache(args.From, args.To, args.Country, result);
+                await cache.SaveDateRangeInCache(args.From, args.To, args.Country, args.Region, result);
             }
             
             return result;

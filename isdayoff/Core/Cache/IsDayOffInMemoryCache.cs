@@ -16,18 +16,18 @@ namespace isdayoff.Core.Cache
         
         public IsDayOffInMemoryCache()
         {
-            Cache = new SortedList<(Country, DateTime), DayOffDateTime>();
+            Cache = new SortedList<(Country, Region?, DateTime), DayOffDateTime>();
         }
 
-        private SortedList<(Country, DateTime), DayOffDateTime> Cache { get; }
+        private SortedList<(Country, Region?, DateTime), DayOffDateTime> Cache { get; }
 
-        public Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, List<DayOffDateTime> dayOffDateTimeList)
+        public Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, Region? region, List<DayOffDateTime> dayOffDateTimeList)
         {
             lock (locker)
             {
                 foreach (var dayOffDateTime in dayOffDateTimeList)
                 {
-                    Cache[(country, dayOffDateTime.DateTime)] = dayOffDateTime;
+                    Cache[(country, region, dayOffDateTime.DateTime)] = dayOffDateTime;
                 }
                 
                 IsDayOff.Tracer.TraceEvent(TraceEventType.Information, TraceEventIds.Caching.CACHE_SAVE_VALUE,
@@ -37,7 +37,7 @@ namespace isdayoff.Core.Cache
             }
         }
 
-        public Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country)
+        public Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country, Region? region)
         {
             var result = new List<DayOffDateTime>();
 
@@ -49,7 +49,7 @@ namespace isdayoff.Core.Cache
                 
                 foreach (var dateTime in days)
                 {
-                    if (Cache.TryGetValue((country, dateTime), out var cachedDayOffDateTime))
+                    if (Cache.TryGetValue((country, region, dateTime), out var cachedDayOffDateTime))
                     {
                         result.Add(cachedDayOffDateTime);
                     }

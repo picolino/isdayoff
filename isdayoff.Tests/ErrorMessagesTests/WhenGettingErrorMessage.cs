@@ -29,6 +29,7 @@ namespace isdayoff.Tests.ErrorMessagesTests
             var errorMessagesFunctions = new List<Func<string>>
                                {
                                    ErrorsMessages.UnknownCountry,
+                                   ErrorsMessages.UnknownRegion,
                                    ErrorsMessages.UnknownResponseDayType,
                                    ErrorsMessages.CacheCanNotBeNull,
                                    ErrorsMessages.SettingCanNotBeNull,

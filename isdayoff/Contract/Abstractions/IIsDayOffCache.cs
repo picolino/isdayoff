@@ -9,7 +9,7 @@ namespace isdayoff.Contract.Abstractions
     /// </summary>
     public interface IIsDayOffCache
     {
-        Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, List<DayOffDateTime> dayOffDateTimeList);
-        Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country);
+        Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, Region? region, List<DayOffDateTime> dayOffDateTimeList);
+        Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country, Region? region);
     }
 }

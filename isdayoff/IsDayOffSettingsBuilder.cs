@@ -17,6 +17,7 @@ namespace isdayoff
         private const string ApiBaseUrl = "https://isdayoff.ru/api/";
         
         private Country defaultCountry = Country.Russia;
+        private Region? defaultRegion = null;
         private IIsDayOffCache cache = new IsDayOffNoCache();
         private SourceLevels? logLevel = null;
         private bool useShortDays = false;
@@ -61,6 +62,17 @@ namespace isdayoff
         public IsDayOffSettingsBuilder UseDefaultCountry(Country newDefaultCountry)
         {
             defaultCountry = newDefaultCountry;
+            return this;
+        }
+
+        /// <summary>
+        /// Set up default region for methods without region in parameters
+        /// </summary>
+        /// <param name="newDefaultRegion">Region to set as default region</param>
+        /// <returns>Settings builder</returns>
+        public IsDayOffSettingsBuilder UseDefaultRegion(Region newDefaultRegion)
+        {
+            defaultRegion = newDefaultRegion;
             return this;
         }
 
@@ -116,7 +128,8 @@ namespace isdayoff
                 ApiBaseUrl, 
                 userAgent, 
                 cache, 
-                defaultCountry, 
+                defaultCountry,
+                defaultRegion,
                 useShortDays, 
                 treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
                 useSixDaysWorkWeek, 

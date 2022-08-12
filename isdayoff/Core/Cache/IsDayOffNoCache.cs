@@ -8,12 +8,12 @@ namespace isdayoff.Core.Cache
 {
     internal class IsDayOffNoCache : IIsDayOffCache
     {
-        public Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, List<DayOffDateTime> dayOffDateTimeList)
+        public Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, Region? region, List<DayOffDateTime> dayOffDateTimeList)
         {
             return Task.CompletedTask;
         }
 
-        public Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country)
+        public Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country, Region? region)
         {
             return Task.FromResult(default(List<DayOffDateTime>));
         }

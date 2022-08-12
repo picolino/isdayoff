@@ -8,6 +8,7 @@ namespace isdayoff.Core
         public DateTime From { get; }
         public DateTime To { get; }
         public Country Country { get; }
+        public Region? Region { get; }
         public bool UseShortDays { get; }
         public bool TreatNonWorkingDaysByCovidAsWorkingDayAdvanced { get; }
         public bool UseSixDaysWorkWeek { get; }
@@ -16,6 +17,7 @@ namespace isdayoff.Core
             DateTime from,
             DateTime to,
             Country country,
+            Region? region,
             bool useShortDays,
             bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
             bool useSixDaysWorkWeek)
@@ -28,6 +30,7 @@ namespace isdayoff.Core
             From = from;
             To = to;
             Country = country;
+            Region = region;
             UseShortDays = useShortDays;
             TreatNonWorkingDaysByCovidAsWorkingDayAdvanced = treatNonWorkingDaysByCovidAsWorkingDayAdvanced;
             UseSixDaysWorkWeek = useSixDaysWorkWeek;

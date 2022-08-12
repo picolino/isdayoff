@@ -64,6 +64,13 @@ namespace isdayoff.Core.Exceptions
                        : "Unknown country";
         }
 
+        public static string UnknownRegion()
+        {
+            return IsRussian
+                       ? "Неизвестный регион"
+                       : "Unknown region";
+        }
+
         public static string UnknownResponseDayType()
         {
             return IsRussian

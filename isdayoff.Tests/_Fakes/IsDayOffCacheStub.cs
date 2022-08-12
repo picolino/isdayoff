@@ -10,13 +10,13 @@ namespace isdayoff.Tests._Fakes
     {
         public List<DayOffDateTime> CachedValue { get; set; } = new List<DayOffDateTime>();
         
-        public Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, List<DayOffDateTime> dayOffDateTimeList)
+        public Task SaveDateRangeInCache(DateTime from, DateTime to, Country country, Region? region, List<DayOffDateTime> dayOffDateTimeList)
         {
             CachedValue = dayOffDateTimeList;
             return Task.CompletedTask;
         }
 
-        public Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country)
+        public Task<List<DayOffDateTime>> GetCachedDatesRangeOrDefault(DateTime from, DateTime to, Country country, Region? region)
         {
             return Task.FromResult(CachedValue.Count == 0 ? default : CachedValue);
         }

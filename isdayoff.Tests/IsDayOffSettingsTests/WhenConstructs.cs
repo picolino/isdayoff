@@ -14,6 +14,7 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
                 UserAgentStub,
                 CacheStub,
                 Country.Russia,
+                null,
                 false,
                 false,
                 false,
@@ -30,12 +31,30 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
                 UserAgentStub,
                 CacheStub,
                 Country.Russia,
+                null,
                 false,
                 false,
                 false,
                 SourceLevels.Off);
            
             Assert.That(instance.DefaultCountry, Is.EqualTo(Country.Russia));
+        }
+
+        [Test]
+        public void DefaultRegionSaves()
+        {
+            var instance = new IsDayOffSettings(
+                ApiBaseUrlStub,
+                UserAgentStub,
+                CacheStub,
+                Country.Russia,
+                Region.RuBa,
+                false,
+                false,
+                false,
+                SourceLevels.Off);
+           
+            Assert.That(instance.DefaultRegion, Is.EqualTo(Region.RuBa));
         }
 
         [Test]
@@ -46,6 +65,7 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
                 UserAgentStub,
                 CacheStub,
                 Country.Russia,
+                null,
                 false,
                 false,
                 false,
@@ -62,6 +82,7 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
                 UserAgentStub,
                 CacheStub,
                 Country.Russia,
+                null,
                 false,
                 false,
                 false,
@@ -78,6 +99,7 @@ namespace isdayoff.Tests.IsDayOffSettingsTests
                 UserAgentStub,
                 CacheStub,
                 Country.Russia,
+                null,
                 false,
                 false,
                 false,

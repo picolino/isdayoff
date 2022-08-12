@@ -445,6 +445,7 @@ namespace isdayoff
                        from, 
                        to, 
                        country, 
+                       settings.DefaultRegion,
                        settings.UseShortDays,
                        settings.TreatNonWorkingDaysByCovidAsWorkingDayAdvanced,
                        settings.UseSixDaysWorkWeek,
@@ -472,15 +473,50 @@ namespace isdayoff
             bool useSixDaysWorkWeek, 
             CancellationToken cancellationToken)
         {
+            return await CheckDatesRangeAsync(
+                from,
+                to,
+                country,
+                settings.DefaultRegion,
+                useShortDays,
+                treatNonWorkingDaysByCovidAsWorkingDayAdvanced,
+                useSixDaysWorkWeek,
+                cancellationToken);
+        }
+
+        /// <summary>
+        /// Get day off information for dates range
+        /// </summary>
+        /// <param name="from">Date from (inclusive)</param>
+        /// <param name="to">Date to (inclusive)</param>
+        /// <param name="country">Country to get day off information for</param>
+        /// <param name="region">Region to get day off information for</param>
+        /// <param name="useSixDaysWorkWeek">Use six days work week</param>
+        /// <param name="useShortDays">Use short days</param>
+        /// <param name="treatNonWorkingDaysByCovidAsWorkingDayAdvanced">Use working days advanced</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>Day off information</returns>
+        /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
+        public async Task<List<DayOffDateTime>> CheckDatesRangeAsync(
+            DateTime from, 
+            DateTime to, 
+            Country country,
+            Region? region,
+            bool useShortDays,
+            bool treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
+            bool useSixDaysWorkWeek, 
+            CancellationToken cancellationToken)
+        {
             return await CheckAsync(
-                       new IsDayOffGetDatesRangeArgs(
-                           from,
-                           to,
-                           country,
-                           useShortDays,
-                           treatNonWorkingDaysByCovidAsWorkingDayAdvanced,
-                           useSixDaysWorkWeek),
-                       cancellationToken);
+                new IsDayOffGetDatesRangeArgs(
+                  from,
+                  to,
+                  country,
+                  region,
+                  useShortDays,
+                  treatNonWorkingDaysByCovidAsWorkingDayAdvanced,
+                  useSixDaysWorkWeek),
+                cancellationToken);
         }
 
         /// <summary>
