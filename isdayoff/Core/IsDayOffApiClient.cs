@@ -46,7 +46,7 @@ namespace isdayoff.Core
                        useShortDays, 
                        treatNonWorkingDaysByCovidAsWorkingDayAdvanced, 
                        useSixDaysWorkWeek, 
-                       cancellationToken);
+                       cancellationToken).ConfigureAwait(false);
         }
         
         private async Task<GetDataApiResponse> GetDataInternalAsync(
@@ -80,8 +80,8 @@ namespace isdayoff.Core
                     IsDayOff.Tracer.TraceEvent(TraceEventType.Information, TraceEventIds.Requesting.REQUEST_SENDING,
                                                "Sending HTTP GET: '{0}'", requestUrl);
                     
-                    var response = await httpClient.GetAsync(requestUrl, cancellationToken);
-                    var responseAsString = await response.Content.ReadAsStringAsync();
+                    var response = await httpClient.GetAsync(requestUrl, cancellationToken).ConfigureAwait(false);
+                    var responseAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     IsDayOff.Tracer.TraceEvent(TraceEventType.Information, TraceEventIds.Requesting.REQUEST_SENT,
                                                "Response received with status code: '{0}' and string content: '{1}'", response.StatusCode, responseAsString);

@@ -70,7 +70,7 @@ namespace isdayoff
         {
             return await CheckYearAsync(
                        year, 
-                       CancellationToken.None);
+                       CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace isdayoff
             return await CheckYearAsync(
                        year, 
                        settings.DefaultCountry, 
-                       cancellationToken);
+                       cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace isdayoff
             return await CheckYearAsync(
                        year, 
                        country, 
-                       CancellationToken.None);
+                       CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace isdayoff
                        yearDateTime, 
                        yearDateTime.EndOfYear(), 
                        country, 
-                       cancellationToken);
+                       cancellationToken).ConfigureAwait(false);
         }
         
         /// <summary>
@@ -143,7 +143,7 @@ namespace isdayoff
             return await CheckMonthAsync(
                        year, 
                        month, 
-                       CancellationToken.None);
+                       CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace isdayoff
                        year, 
                        month, 
                        settings.DefaultCountry, 
-                       cancellationToken);
+                       cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace isdayoff
                        year, 
                        month, 
                        country, 
-                       CancellationToken.None);
+                       CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace isdayoff
                        monthDateTime, 
                        monthDateTime.EndOfMonth(), 
                        country, 
-                       cancellationToken);
+                       cancellationToken).ConfigureAwait(false);
         }
         
         /// <summary>
@@ -227,7 +227,7 @@ namespace isdayoff
                        year, 
                        month, 
                        day, 
-                       CancellationToken.None);
+                       CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace isdayoff
                        month, 
                        day, 
                        settings.DefaultCountry, 
-                       cancellationToken);
+                       cancellationToken).ConfigureAwait(false);
         }
         
         /// <summary>
@@ -261,7 +261,7 @@ namespace isdayoff
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
         public async Task<DayType> CheckDayAsync(DateTime day)
         {
-            return await CheckDayAsync(day, CancellationToken.None);
+            return await CheckDayAsync(day, CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace isdayoff
             return await CheckDayAsync(
                        day, 
                        settings.DefaultCountry, 
-                       cancellationToken);
+                       cancellationToken).ConfigureAwait(false);
         }
         
         /// <summary>
@@ -295,7 +295,7 @@ namespace isdayoff
             return await CheckDayAsync(
                        day, 
                        country, 
-                       CancellationToken.None);
+                       CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace isdayoff
                        day.Month, 
                        day.Day, 
                        country, 
-                       cancellationToken);
+                       cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace isdayoff
                        month, 
                        day, 
                        country, 
-                       CancellationToken.None);
+                       CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -365,7 +365,7 @@ namespace isdayoff
                              dayDateTime, 
                              dayDateTime, 
                              country, 
-                             cancellationToken);
+                             cancellationToken).ConfigureAwait(false);
             return result.Single().DayType;
         }
 
@@ -383,7 +383,7 @@ namespace isdayoff
             return await CheckDatesRangeAsync(
                        from, 
                        to, 
-                       CancellationToken.None);
+                       CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -403,7 +403,7 @@ namespace isdayoff
                        from, 
                        to, 
                        settings.DefaultCountry, 
-                       cancellationToken);
+                       cancellationToken).ConfigureAwait(false);
         }
         
         /// <summary>
@@ -423,7 +423,7 @@ namespace isdayoff
                        from, 
                        to, 
                        country,
-                       CancellationToken.None);
+                       CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -449,7 +449,7 @@ namespace isdayoff
                        settings.UseShortDays,
                        settings.TreatNonWorkingDaysByCovidAsWorkingDayAdvanced,
                        settings.UseSixDaysWorkWeek,
-                       cancellationToken);
+                       cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -516,7 +516,7 @@ namespace isdayoff
                   useShortDays,
                   treatNonWorkingDaysByCovidAsWorkingDayAdvanced,
                   useSixDaysWorkWeek),
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -527,7 +527,7 @@ namespace isdayoff
         /// <exception cref="IsDayOffExternalServiceException">Throws if error occured while processing request to isdayoff external service</exception>
         public async Task<List<DayOffDateTime>> CheckAsync(IsDayOffGetDatesRangeArgs args)
         {
-            return await CheckAsync(args, CancellationToken.None);
+            return await CheckAsync(args, CancellationToken.None).ConfigureAwait(false);
         }
         
         /// <summary>
@@ -541,7 +541,7 @@ namespace isdayoff
             IsDayOffGetDatesRangeArgs args,
             CancellationToken cancellationToken)
         {
-            return await service.CheckDatesRangeAsync(args, cancellationToken);
+            return await service.CheckDatesRangeAsync(args, cancellationToken).ConfigureAwait(false);
         }
     }
 }
