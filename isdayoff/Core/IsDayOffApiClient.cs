@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -20,6 +21,43 @@ namespace isdayoff.Core
         private readonly HttpClientFactory httpClientFactory;
         private readonly string baseUrl;
         private readonly string userAgent;
+        
+        private Dictionary<Country, string> countryCodes = new Dictionary<Country, string>
+        {
+            { Country.Russia, "ru" },
+            { Country.Belarus, "by" },
+            { Country.Ukraine, "ua" },
+            { Country.Kazakhstan, "kz" },
+            { Country.USA, "us" },
+            { Country.Uzbekistan, "uz" },
+            { Country.Turkey, "tr" },
+            { Country.Latvia, "lv" },
+        };
+        
+        private Dictionary<Region, string> regionCodes = new Dictionary<Region, string>
+        {
+            { Region.RuAd, "ad" },
+            { Region.RuAl, "al" },
+            { Region.RuBa, "ba" },
+            { Region.RuBel, "bel" },
+            { Region.RuBu, "bu" },
+            { Region.RuCe, "ce" },
+            { Region.RuCu, "cu" },
+            { Region.RuDa, "da" },
+            { Region.RuIn, "in" },
+            { Region.RuKa, "ka" },
+            { Region.RuKb, "kb" },
+            { Region.RuKc, "kc" },
+            { Region.RuKl, "kl" },
+            { Region.RuPnz, "pnz" },
+            { Region.RuSa, "sa" },
+            { Region.RuSar, "sar" },
+            { Region.RuSe, "se" },
+            { Region.RuSta, "sta" },
+            { Region.RuTa, "ta" },
+            { Region.RuTy, "ty" },
+            { Region.RuZab, "zab" },
+        };
 
         public IsDayOffApiClient(string baseUrl, string userAgent, HttpClientFactory httpClientFactory)
         {
@@ -151,82 +189,37 @@ namespace isdayoff.Core
             }
         }
         
-        private static string GetCountryCode(Country country)
+        private string GetCountryCode(Country country)
         {
-            switch (country)
+            if (countryCodes.TryGetValue(country, out var countryCode))
             {
-                case Country.Russia:
-                    return "ru";
-                case Country.Belarus:
-                    return "by";
-                case Country.Ukraine:
-                    return "ua";
-                case Country.Kazakhstan:
-                    return "kz";
-                case Country.USA:
-                    return "us";
-                case Country.Uzbekistan:
-                    return "uz";
-                case Country.Turkey:
-                    return "tr";
-                case Country.Latvia:
-                    return "lv";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(country), country, ErrorsMessages.UnknownCountry());
+                return countryCode;
             }
+            
+            throw new ArgumentOutOfRangeException(nameof(country), country, ErrorsMessages.UnknownCountry());
         }
 
-        private static string GetRegionCode(Region? region)
+        private string GetRegionCode(Region? region)
         {
-            switch (region)
+            string regionCodeResult;
+            
+            if (region.HasValue)
             {
-                case Region.RuAd:
-                    return "ad";
-                case Region.RuAl:
-                    return "al";
-                case Region.RuBa:
-                    return "ba";
-                case Region.RuBu:
-                    return "bu";
-                case Region.RuDa:
-                    return "da";
-                case Region.RuIn:
-                    return "in";
-                case Region.RuKb:
-                    return "kb";
-                case Region.RuKl:
-                    return "kl";
-                case Region.RuKc:
-                    return "kc";
-                case Region.RuKa:
-                    return "ka";
-                case Region.RuSa:
-                    return "sa";
-                case Region.RuSe:
-                    return "se";
-                case Region.RuTa:
-                    return "ta";
-                case Region.RuTy:
-                    return "ty";
-                case Region.RuCe:
-                    return "ce";
-                case Region.RuCu:
-                    return "cu";
-                case Region.RuZab:
-                    return "zab";
-                case Region.RuSta:
-                    return "sta";
-                case Region.RuBel:
-                    return "bel";
-                case Region.RuPnz:
-                    return "pnz";
-                case Region.RuSar:
-                    return "sar";
-                case null:
-                    return string.Empty;
-                default:
+                if (regionCodes.TryGetValue(region.Value, out var regionCode))
+                {
+                    regionCodeResult = regionCode;
+                }
+                else
+                {
                     throw new ArgumentOutOfRangeException(nameof(region), region, ErrorsMessages.UnknownRegion());
+                }
             }
+            else
+            {
+                regionCodeResult = string.Empty;
+            }
+
+            return regionCodeResult;
         }
     }
 }

@@ -113,7 +113,6 @@ namespace isdayoff.Tests.IsDayOffApiClientTests
             
             // Region Tests
             
-            
             yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Russia, Region.RuAd, false, false, false, "0")
                 { TestName = "One day with region passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ru-ad&pre=0&covid=0&sd=0" };
             yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Russia, Region.RuAl, false, false, false, "0")
