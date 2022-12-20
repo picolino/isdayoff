@@ -7,7 +7,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{5BFE32FF-A5E6-430C-9FF8-EDE60337091C}"
 	ProjectSection(SolutionItems) = preProject
 		.github\CODE_OF_CONDUCT.md = .github\CODE_OF_CONDUCT.md
-		.github\funding.yml = .github\funding.yml
 		.github\PULL_REQUEST_TEMPLATE.md = .github\PULL_REQUEST_TEMPLATE.md
 	EndProjectSection
 EndProject

@@ -101,9 +101,6 @@ Here a full list of isdayoff resources that is not implemented in library and an
 | `/tomorrow`             | `new IsDayOff().CheckDayAsync(DateTime.Today.AddDays(1))` |
 | `/api/isleap?year=YYYY` | `DateTime.IsLeapYear(YYYY)`                               |
 
-## Support
-<a href="https://www.buymeacoffee.com/picolino" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"  alt="Buy Me A Coffee" style="height: 60px !important;width: auto !important;" ></a>
-
 ## License
 
 [MIT](https://github.com/picolino/isdayoff/blob/master/license)
