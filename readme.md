@@ -94,7 +94,7 @@ A: Because that functions built into .NET library or they can be created using a
 
 Here a full list of isdayoff resources that is not implemented in library and analogues that can be used to achieve similar behaviour:
 
-| isdayoff resource       | .NET analogue                                             |
+| isdayoff resource       | analogue                                             |
 |-------------------------|-----------------------------------------------------------|
 | `/now`                  | `DateTime.Now`                                            |
 | `/today`                | `new IsDayOff().CheckDayAsync(DateTime.Today)`            |
