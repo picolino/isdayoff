@@ -2,21 +2,21 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <AssemblyVersion>1.6</AssemblyVersion>
-        <PackageVersion>1.6</PackageVersion>
+        <AssemblyVersion>1.7</AssemblyVersion>
+        <PackageVersion>1.7</PackageVersion>
         <Title>isdayoff</Title>
         <Authors>Danila Chervonny (contact@picolino.dev)</Authors>
         <Description>IsDayOff is a .NET library for API isdayoff service (https://isdayoff.ru/)</Description>
-        <Copyright>Danila Chervonny, Copyright © 2022 MIT</Copyright>
+        <Copyright>Danila Chervonny, Copyright © 2023 MIT</Copyright>
         <PackageTags>IsDayOff, Date, Time, DateTime, Daily, IsWorkday, Holidays</PackageTags>
-        <FileVersion>1.6</FileVersion>
+        <FileVersion>1.7</FileVersion>
         <PackageProjectUrl>https://isdayoff.ru/</PackageProjectUrl>
         <license>MIT</license>
         <RepositoryUrl>https://github.com/picolino/isdayoff</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageIcon>isdayoff.png</PackageIcon>
         <PackageIconUrl>https://raw.githubusercontent.com/picolino/isdayoff/master/isdayoff/isdayoff.png</PackageIconUrl>
-        <PackageReleaseNotes>- Add regions support</PackageReleaseNotes>
+        <PackageReleaseNotes>- Add Georgia support</PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
