@@ -9,6 +9,7 @@
         USA,
         Uzbekistan,
         Turkey,
-        Latvia
+        Latvia,
+        Georgia
     }
 }

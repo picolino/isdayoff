@@ -110,6 +110,8 @@ namespace isdayoff.Tests.IsDayOffApiClientTests
                 { TestName = "Turkey passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=tr&pre=0&covid=0&sd=0" };
             yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Latvia, null, false, false, false, "0")
                 { TestName = "Latvia passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=lv&pre=0&covid=0&sd=0" };
+            yield return new TestCaseData(04.08.Of(2020), 04.08.Of(2020), Country.Georgia, null, false, false, false, "0")
+                { TestName = "Georgia passes correctly", ExpectedResult = $"{ApiBaseUrlStub}getdata?date1=20200804&date2=20200804&cc=ge&pre=0&covid=0&sd=0" };
             
             // Region Tests
             

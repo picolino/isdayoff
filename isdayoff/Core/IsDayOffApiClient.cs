@@ -32,6 +32,7 @@ namespace isdayoff.Core
             { Country.Uzbekistan, "uz" },
             { Country.Turkey, "tr" },
             { Country.Latvia, "lv" },
+            { Country.Georgia, "ge" },
         };
         
         private Dictionary<Region, string> regionCodes = new Dictionary<Region, string>
